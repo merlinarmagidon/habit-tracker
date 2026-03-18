@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    /* Специальные стили для страницы добавления привычки */
+    .add-habit-card {
+        background-color: rgba(38, 44, 60, 0.95);
+        border: 3px solid #D6BDA8;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header {
+        background-color: #262C3C;
+        color: #D6BDA8;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        font-weight: bold;
+        font-size: 26px;
+        border-bottom: 3px solid #D6BDA8;
+    }
+
+    /* Все поля ввода в этой форме */
+    .add-habit-card input,
+    .add-habit-card select,
+    .add-habit-card textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #D6BDA8;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        background-color: rgba(38, 44, 60, 0.9);
+        color: #F3F4F5 !important;
+        transition: all 0.3s ease;
+    }
+
+    /* ТОЛЬКО ЭТО ДОБАВЛЕНО - для видимости текста в выпадающем списке */
+    .add-habit-card select option {
+        background-color: #262C3C;
+        color: #F3F4F5 !important;
+        padding: 10px;
+    }
+
+    .add-habit-card select option:checked {
+        background-color: #D6BDA8;
+        color: #262C3C !important;
+        font-weight: bold;
+    }
+
+    /* Исправление автозаполнения */
+    .add-habit-card input:-webkit-autofill,
+    .add-habit-card input:-webkit-autofill:hover,
+    .add-habit-card input:-webkit-autofill:focus,
+    .add-habit-card select:-webkit-autofill,
+    .add-habit-card select:-webkit-autofill:hover,
+    .add-habit-card select:-webkit-autofill:focus,
+    .add-habit-card textarea:-webkit-autofill,
+    .add-habit-card textarea:-webkit-autofill:hover,
+    .add-habit-card textarea:-webkit-autofill:focus {
+        -webkit-text-fill-color: #F3F4F5 !important;
+        -webkit-box-shadow: 0 0 0px 1000px rgba(38, 44, 60, 0.9) inset !important;
+        color: #F3F4F5 !important;
+        border-color: #D6BDA8 !important;
+        caret-color: #D6BDA8 !important;
+    }
+
+    /* При фокусе на полях */
+    .add-habit-card input:focus,
+    .add-habit-card select:focus,
+    .add-habit-card textarea:focus {
+        outline: none;
+        border-color: #F3F4F5;
+        background-color: rgba(38, 44, 60, 0.95);
+        box-shadow: 0 0 10px rgba(214, 189, 168, 0.5);
+        color: #F3F4F5 !important;
+    }
+
+    /* Плейсхолдеры */
+    .add-habit-card ::placeholder {
+        color: rgba(214, 189, 168, 0.6) !important;
+        opacity: 1;
+    }
+
+    /* Выпадающие списки */
+    .add-habit-card select option {
+        background-color: #262C3C;
+        color: #F3F4F5;
+        padding: 10px;
+    }
+
+    .add-habit-card select option:checked {
+        background-color: #D6BDA8;
+        color: #262C3C;
+        font-weight: bold;
+    }
+
+    /* Кнопки */
+    .add-habit-card .btn {
+        background-color: #262C3C;
+        color: #D6BDA8;
+        border: 2px solid #D6BDA8;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 15px;
+        min-width: 180px;
+    }
+
+    .add-habit-card .btn:hover {
+        background-color: #D6BDA8;
+        color: #262C3C;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(214, 189, 168, 0.3);
+    }
+
+    /* Форма и метки */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        color: #D6BDA8;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .custom-create-habit-text {
+        font-size: 18px;
+        font-weight: 500;
+        color: #D6BDA8;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* Ошибки формы */
+    .text-danger {
+        color: #ff6b6b !important;
+        font-size: 14px;
+        margin-top: 5px;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card add-habit-card">
+                <h2 class="card-header text-center">Создать новую привычку</h2>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="habitSelect" class="col-sm-3 col-form-label text-right">Выберите привычку:</label>
+                        <div class="col-sm-9">
+                            <select id="habitSelect" onchange="populateForm()" class="form-control">
+                                <option value="">Выберите готовую привычку</option>
+                                {% for habit, details in pre_defined_habits.items %}
+                                    <option value="{{ habit }}">{{ habit }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Кастомное создание привычки -->
+                    <div class="form-group row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <h5 class="text-start custom-create-habit-text">Или создайте свою привычку</h5>
+                        </div>
+                    </div>
+
+                    <!-- Форма -->
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Название привычки -->
+                        <div class="form-group row">
+                            <label for="{{ form.name.id_for_label }}" class="col-sm-3 col-form-label text-right">Название:</label>
+                            <div class="col-sm-9">
+                                {{ form.name }}
+                                {% for error in form.name.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Частота -->
+                        <div class="form-group row">
+                            <label for="{{ form.frequency.id_for_label }}" class="col-sm-3 col-form-label text-right">Частота:</label>
+                            <div class="col-sm-9">
+                                {{ form.frequency }}
+                                {% for error in form.frequency.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Период -->
+                        <div class="form-group row">
+                            <label for="{{ form.period.id_for_label }}" class="col-sm-3 col-form-label text-right">Период:</label>
+                            <div class="col-sm-9">
+                                {{ form.period }}
+                                {% for error in form.period.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Цель -->
+                        <div class="form-group row">
+                            <label for="{{ form.goal.id_for_label }}" class="col-sm-3 col-form-label text-right">Цель:</label>
+                            <div class="col-sm-9">
+                                {{ form.goal }}
+                                {% for error in form.goal.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Дата начала -->
+                        <div class="form-group row">
+                            <label for="{{ form.start_date.id_for_label }}" class="col-sm-3 col-form-label text-right">Дата начала:</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    {{ form.start_date }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Заметки -->
+                        <div class="form-group row">
+                            <label for="{{ form.notes.id_for_label }}" class="col-sm-3 col-form-label text-right">Заметки:</label>
+                            <div class="col-sm-9">
+                                {{ form.notes }}
+                            </div>
+                        </div>
+
+                        <!-- Кнопка отправки -->
+                        <div class="form-group row">
+                            <div class="col-sm-7 offset-sm-3">
+                                <button type="submit" class="btn btn-primary btn-block">Создать привычку</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Bootstrap Datepicker с dropdown option
+        $(document).ready(function(){
+            $('#startDateInput').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                container: '#startDateBtn'
+            });
+        });
+
+        function populateForm() {
+            var select = document.getElementById("habitSelect");
+            var habit = select.options[select.selectedIndex].value;
+            var habitDetails = {{ pre_defined_habits|safe }}[habit];
+
+            // Set values for form fields
+            document.getElementById("id_name").value = habit;
+            document.getElementById("id_frequency").value = habitDetails.frequency;
+            document.getElementById("id_period").value = habitDetails.period;
+            document.getElementById("id_goal").value = habitDetails.goal;
+            document.getElementById("id_notes").value = habitDetails.notes;
+        }
+    </script>
+<script>
+// ПРИНУДИТЕЛЬНОЕ ИСПРАВЛЕНИЕ ЦВЕТА ТЕКСТА В ВЫПАДАЮЩИХ СПИСКАХ
+document.addEventListener('DOMContentLoaded', function() {
+    // Находим все select элементы на странице
+    var selects = document.querySelectorAll('select');
+
+    selects.forEach(function(select) {
+        // Принудительно устанавливаем цвет текста
+        select.style.color = '#F3F4F5';
+
+        // Исправляем цвет для всех option
+        var options = select.querySelectorAll('option');
+        options.forEach(function(option) {
+            option.style.color = '#F3F4F5';
+            option.style.backgroundColor = '#262C3C';
+        });
+
+        // При изменении выбора
+        select.addEventListener('change', function() {
+            this.style.color = '#F3F4F5';
+        });
+
+        // При клике
+        select.addEventListener('mousedown', function() {
+            var allOptions = this.querySelectorAll('option');
+            allOptions.forEach(function(opt) {
+                opt.style.color = '#F3F4F5';
+                opt.style.backgroundColor = '#262C3C';
+            });
+        });
+    });
+
+    // Также исправляем для выпадающего списка готовых привычек
+    var habitSelect = document.getElementById('habitSelect');
+    if (habitSelect) {
+        habitSelect.style.color = '#F3F4F5';
+        var habitOptions = habitSelect.querySelectorAll('option');
+        habitOptions.forEach(function(opt) {
+            opt.style.color = '#F3F4F5';
+            opt.style.backgroundColor = '#262C3C';
+        });
+    }
+});
+</script>
+
+<style>
+/* ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ ВЫПАДАЮЩИХ СПИСКОВ */
+select, select option, #habitSelect, #habitSelect option {
+    color: #F3F4F5 !important;
+    background-color: #262C3C !important;
+}
+
+select:focus, select:active, select:hover {
+    color: #F3F4F5 !important;
+}
+
+/* Стиль для выбранного пункта */
+select option:checked, #habitSelect option:checked {
+    background-color: #D6BDA8 !important;
+    color: #262C3C !important;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card add-habit-card">
+                    <h1 class="card-header text-center">Профиль пользователя</h1>
+                    <div class="card-body">
+                        <p><i class="bi bi-person"></i> <strong>Полное имя:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                        {% if profile.email %}
+                            <p><i class="bi bi-envelope"></i> <strong>Электронная почта:</strong> {{ profile.email }}</p>
+                        {% endif %}
+                        <p><i class="bi bi-calendar"></i> <strong>Зарегистрирован:</strong> {{ profile.user.date_joined | date:"d.m.Y H:i:s" }}</p>
+
+                        <div class="form-group row">
+                            <div class="col-sm-7 offset-sm-1">
+                                <a class="btn btn-primary btn-block" href="{% url 'habit-home' %}">На главную</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

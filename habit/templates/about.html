@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_styles %}
+<style>
+    /* Очень сильные селекторы для переопределения */
+    html body {
+        background: url('{% static "images/about_us.jpg" %}') no-repeat center center fixed !important;
+        background-size: 100% 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Убираем возможные градиенты и наложения */
+    html body::before,
+    html body::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Прячем контент */
+    .content {
+        display: none !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Пусто -->
+{% endblock %}

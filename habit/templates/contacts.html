@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_styles %}
+<style>
+    /* Используем дефолтный фон */
+    html body {
+        background: url('{% static "images/default_bg.jpg" %}') no-repeat center center fixed !important;
+        background-size: cover !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Убираем возможные градиенты и наложения */
+    html body::before,
+    html body::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Контейнер для контактов */
+    .contacts-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+        padding: 20px;
+    }
+
+    /* Заголовок */
+    .contacts-title {
+        color: #D6BDA8;
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Карточки контактов */
+    .contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .contact-card {
+        background-color: rgba(38, 44, 60, 0.85);
+        border: 3px solid #D6BDA8;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        backdrop-filter: blur(5px);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(214, 189, 168, 0.3);
+    }
+
+    .contact-icon {
+        font-size: 64px;
+        color: #D6BDA8;
+        margin-bottom: 20px;
+    }
+
+    .contact-name {
+        color: #D6BDA8;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .contact-info {
+        color: #F3F4F5;
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .contact-link {
+        display: inline-block;
+        background-color: #D6BDA8;
+        color: #262C3C;
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        border: 2px solid #D6BDA8;
+    }
+
+    .contact-link:hover {
+        background-color: #262C3C;
+        color: #D6BDA8;
+        transform: scale(1.05);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .contacts-title {
+            font-size: 36px;
+        }
+
+        .contact-name {
+            font-size: 24px;
+        }
+
+        .contact-info {
+            font-size: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contacts-container">
+    <h1 class="contacts-title">Контакты</h1>
+
+    <!-- Карточки контактов -->
+    <div class="contacts-grid">
+        <!-- Email -->
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <h2 class="contact-name">Email</h2>
+            <p class="contact-info">merlin.armagidon@gmail.com</p>
+            <a href="mailto:merlin.armagidon@gmail.com" class="contact-link">Написать нам</a>
+        </div>
+
+        <!-- Телефон -->
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+            </div>
+            <h2 class="contact-name">Телефон</h2>
+            <p class="contact-info">+7 (999) 123-45-67<br>+7 (999) 765-43-21</p>
+            <a href="tel:+79991234567" class="contact-link">Позвонить</a>
+        </div>
+
+        <!-- Адрес -->
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h2 class="contact-name">Адрес</h2>
+            <p class="contact-info">г. Москва, ул. Примерная, д. 123<br>офис 456</p>
+            <a href="https://maps.google.com" target="_blank" class="contact-link">На карте</a>
+        </div>
+
+        <!-- Время работы -->
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h2 class="contact-name">Время работы</h2>
+            <p class="contact-info">Пн-Пт: 9:00 - 20:00<br>Сб-Вс: 10:00 - 18:00</p>
+            <a href="#" class="contact-link">Всегда на связи</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
