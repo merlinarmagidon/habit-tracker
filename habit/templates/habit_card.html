@@ -9,7 +9,13 @@
                     </a>
                 </div>
             </div>
-            <h6 class="card-subtitle mb-2" style="color: #D6BDA8; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">{{ habit.period.capitalize }} Привычка</h6>
+            <h6 class="card-subtitle mb-2" style="color: #D6BDA8; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                {% if habit.period == 'daily' %}Ежедневная{% endif %}
+                {% if habit.period == 'weekly' %}Еженедельная{% endif %}
+                {% if habit.period == 'monthly' %}Ежемесячная{% endif %}
+                {% if habit.period == 'annual' %}Ежегодная{% endif %}
+                привычка
+            </h6>
             <p class="card-text" style="color: #F3F4F5; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"><strong style="color: #D6BDA8;">Начало:</strong> {{ habit.creation_time|date:"d.m.Y H:i" }}</p>
             <p class="card-text" style="color: #F3F4F5; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"><strong style="color: #D6BDA8;">Дата завершения:</strong> {{ habit.completion_date|date:"d.m.Y H:i" }}</p>
             {% with streak=habit.streak.first %}

@@ -8,6 +8,7 @@
                 {% if habit.period == 'daily' %}Ежедневная{% endif %}
                 {% if habit.period == 'weekly' %}Еженедельная{% endif %}
                 {% if habit.period == 'monthly' %}Ежемесячная{% endif %}
+                {% if habit.period == 'annual' %}Ежегодная{% endif %}
                 привычка
             </h6>
             <p class="card-text"><strong>Начало:</strong> {{ habit.creation_time|date:"d.m.Y H:i" }}</p>

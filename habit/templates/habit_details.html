@@ -12,6 +12,7 @@
                                 {% if habit.period == 'daily' %}Ежедневная{% endif %}
                                 {% if habit.period == 'weekly' %}Еженедельная{% endif %}
                                 {% if habit.period == 'monthly' %}Ежемесячная{% endif %}
+                                {% if habit.period == 'annual' %}Ежегодная{% endif %}
                                 привычка
                             </h4>
                             <p><i class="bi bi-person mt-2"></i> <strong>Название привычки:</strong> {{ habit.name.capitalize }}</p>
@@ -55,11 +56,11 @@
                             <div class="col-md-12">
                                 <table class="table">
                                     <thead>
-                                        <tr>
+                                         <tr>
                                             <th>№</th>
                                             <th>Статус</th>
                                             <th>Дата выполнения</th>
-                                        </tr>
+                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for task in tasks %}
@@ -84,11 +85,11 @@
                             <div class="col-md-12">
                                 <table class="table">
                                     <thead>
-                                        <tr>
+                                         <tr>
                                             <th>№</th>
                                             <th>Серия</th>
                                             <th>Дата</th>
-                                        </tr>
+                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for streak in achievement %}
