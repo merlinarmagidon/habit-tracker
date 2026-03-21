@@ -28,7 +28,11 @@
                     <p class="progress-text">{{ habit.progress_percentage|floatformat:"2" }}%</p>
                 </div>
             </div>
-            <a class="btn btn-text btn-block mt-1" href="{% url 'habit_detail' habit_id=habit.id %}">Подробнее</a>
+            {% if habit.id %}
+                <a class="btn btn-text btn-block mt-1" href="{% url 'habit_detail' habit_id=habit.id %}">Подробнее</a>
+            {% else %}
+                <span class="btn btn-text btn-block mt-1 disabled" style="opacity: 0.6; cursor: not-allowed;">Нет данных</span>
+            {% endif %}
         </div>
     </div>
 </div>
