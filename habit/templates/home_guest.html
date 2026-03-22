@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_styles %}
+<style>
+    /* Свой фон только для гостевой страницы */
+    html body {
+        background: url('{% static "images/guest_bg.jpg" %}') no-repeat center center fixed !important;
+        background-size: 100% 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Убираем возможные градиенты и наложения */
+    html body::before,
+    html body::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Контент */
+    .content {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px !important;
+    }
+
+    /* Контейнер с кнопкой */
+    .guest-container {
+        text-align: center;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Кнопка */
+    .btn-try {
+        background-color: #D6BDA8;
+        color: #262C3C;
+        border: 3px solid #262C3C;
+        border-radius: 50px;
+        padding: 18px 50px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-try:hover {
+        background-color: #262C3C;
+        color: #D6BDA8;
+        border: 3px solid #D6BDA8;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(214, 189, 168, 0.5);
+    }
+
+    /* Адаптивность для маленьких экранов */
+    @media (max-width: 768px) {
+        .btn-try {
+            padding: 14px 35px;
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .btn-try {
+            padding: 12px 25px;
+            font-size: 18px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guest-container">
+    <a href="{% url 'register' %}" class="btn-try">Попробовать</a>
+</div>
+{% endblock %}

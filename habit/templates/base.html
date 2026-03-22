@@ -99,26 +99,25 @@
             align-items: center;
         }
 
-        /* Логотип */
+        /* ЛОГОТИП - БЕЗ ОБВОДКИ */
         .logo-img {
             width: 120px;
             height: 120px;
-            border-radius: 50%;
-            border: 4px solid #D6BDA8;
-            background-color: #262C3C;
-            padding: 12px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            /* border-radius: 50%; Убрано - квадратный логотип */
+            /* border: 4px solid #D6BDA8; Убрана обводка */
+            background-color: transparent;
+            padding: 0;
+            box-shadow: none;
             object-fit: contain;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            -webkit-transition: -webkit-transform 0.3s ease, box-shadow 0.3s ease;
-            -ms-transition: -ms-transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
+            -webkit-transition: -webkit-transform 0.3s ease;
+            -ms-transition: -ms-transform 0.3s ease;
         }
 
         .logo-img:hover {
             transform: scale(1.05);
             -webkit-transform: scale(1.05);
             -ms-transform: scale(1.05);
-            box-shadow: 0 4px 18px rgba(214, 189, 168, 0.4);
         }
 
         nav {
@@ -194,7 +193,7 @@
             font-weight: bold;
         }
 
-        /* Карточки - УМЕНЬШЕНЫ */
+        /* Карточки */
         .add-habit-card, .streak-card, .home-streak-card, .completed-card {
             background-color: rgba(38, 44, 60, 0.9);
             background-color: #262C3C; /* Для старых браузеров */
@@ -251,7 +250,7 @@
             box-shadow: 0 4px 12px rgba(214, 189, 168, 0.3);
         }
 
-        /* Формы - кроссбраузерные */
+        /* Формы */
         .form-group {
             margin-bottom: 20px;
             width: 100%;
@@ -312,7 +311,7 @@
             width: 100%;
         }
 
-        /* Адаптивность - кроссбраузерная */
+        /* Адаптивность */
         @media (max-width: 1024px) {
             header {
                 margin-bottom: 35px;
@@ -380,8 +379,6 @@
                 width: 90px;
                 height: 90px;
                 bottom: -60px;
-                padding: 10px;
-                border-width: 3px;
             }
 
             .add-habit-card, .streak-card {
@@ -438,8 +435,6 @@
                 width: 80px;
                 height: 80px;
                 bottom: -50px;
-                padding: 8px;
-                border-width: 2px;
             }
 
             .content h1 {

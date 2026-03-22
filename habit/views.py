@@ -17,10 +17,13 @@ from .analytics import (
 )
 
 
+# Главная страница - тут показываются задачи пользователя
 class HabitView(View):
     def dispatch(self, request, *args, **kwargs):
+        # Проверяем авторизацию
         if not request.user.is_authenticated:
-            return redirect('login')
+            # Если пользователь не авторизован, показываем гостевую страницу
+            return render(request, 'home_guest.html')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -47,6 +50,10 @@ class HabitView(View):
         return render(request, 'home.html', context)
 
     def post(self, request, *args, **kwargs):
+        # Проверка на случай, если неавторизованный пользователь отправляет POST
+        if not request.user.is_authenticated:
+            return redirect('login')
+
         task_id = request.POST.get('task_id')
         habit_id = request.POST.get('habit_id')
 
@@ -75,6 +82,7 @@ class HabitView(View):
         return redirect('habit-home')
 
 
+# Класс для управления привычками (добавление, удаление, просмотр)
 class HabitManagerView(View):
 
     @staticmethod
@@ -221,6 +229,7 @@ class HabitManagerView(View):
         return render(request, 'habit_details.html', context)
 
 
+# Класс для страницы аналитики
 class HabitAnalysis(View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

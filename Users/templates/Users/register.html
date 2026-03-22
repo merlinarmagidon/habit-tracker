@@ -87,10 +87,43 @@
         padding-right: 15px;
     }
 
-    /* Кнопка */
+    /* КНОПКА - СВЕТЛАЯ И ВИДИМАЯ */
     .btn-block {
         width: 100%;
         margin-top: 10px;
+    }
+
+    .btn-primary {
+        background-color: #D6BDA8 !important;
+        color: #262C3C !important;
+        border: 2px solid #262C3C !important;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #262C3C !important;
+        color: #D6BDA8 !important;
+        border: 2px solid #D6BDA8 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(214, 189, 168, 0.5);
+    }
+
+    /* Ссылка входа */
+    .card-footer a {
+        color: #D6BDA8 !important;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .card-footer a:hover {
+        color: #F3F4F5 !important;
+        text-decoration: underline;
     }
 </style>
 {% endblock %}

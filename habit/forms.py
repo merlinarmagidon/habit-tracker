@@ -30,8 +30,7 @@ class HabitForm(forms.ModelForm):
     PERIOD_CHOICES = [
         ('daily', 'Ежедневно'),
         ('weekly', 'Еженедельно'),
-        ('monthly', 'Ежемесячно'),
-        ('annual', 'Ежегодно')
+        ('monthly', 'Ежемесячно')
     ]
 
     GOAL_CHOICES = [
