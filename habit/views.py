@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -17,12 +18,9 @@ from .analytics import (
 )
 
 
-# Главная страница - тут показываются задачи пользователя
 class HabitView(View):
     def dispatch(self, request, *args, **kwargs):
-        # Проверяем авторизацию
         if not request.user.is_authenticated:
-            # Если пользователь не авторизован, показываем гостевую страницу
             return render(request, 'home_guest.html')
         return super().dispatch(request, *args, **kwargs)
 
@@ -50,7 +48,6 @@ class HabitView(View):
         return render(request, 'home.html', context)
 
     def post(self, request, *args, **kwargs):
-        # Проверка на случай, если неавторизованный пользователь отправляет POST
         if not request.user.is_authenticated:
             return redirect('login')
 
@@ -82,7 +79,6 @@ class HabitView(View):
         return redirect('habit-home')
 
 
-# Класс для управления привычками (добавление, удаление, просмотр)
 class HabitManagerView(View):
 
     @staticmethod
@@ -90,7 +86,6 @@ class HabitManagerView(View):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        # Русские готовые привычки
         pre_defined_habits = {
             'Упражнения': {
                 'frequency': '2',
@@ -134,8 +129,8 @@ class HabitManagerView(View):
             form = HabitForm(request.POST)
             if form.is_valid():
                 if not form.is_goal_achievable():
-                    messages.error(request, '''Частота приводит к цели, которая не
-                                достижима. Выберите более длительную цель.''')
+                    messages.error(request,
+                                   'Частота приводит к цели, которая не достижима. Выберите более длительную цель.')
                     return render(request, 'add_habit.html', {'form': form, 'pre_defined_habits': pre_defined_habits})
 
                 if not form.is_valid_habit_name(request.user):
@@ -190,7 +185,6 @@ class HabitManagerView(View):
 
         all_active_habits = all_tracked_habits(user_id=user_id)
 
-        # Filter tracked habits with the same periodicity
         daily_habits = habits_by_period('daily')(all_active_habits)
         weekly_habits = habits_by_period('weekly')(all_active_habits)
         monthly_habits = habits_by_period('monthly')(all_active_habits)
@@ -229,7 +223,6 @@ class HabitManagerView(View):
         return render(request, 'habit_details.html', context)
 
 
-# Класс для страницы аналитики
 class HabitAnalysis(View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -259,7 +252,6 @@ class HabitAnalysis(View):
         daily_struggled_most = rank_habits(weights, 'daily')
         weekly_struggled_most = rank_habits(weights, 'weekly')
 
-        print(weekly_struggled_most)
         calculate_progress(all_habits)
         calculate_progress(daily_habits)
         calculate_progress(weekly_habits)
@@ -276,7 +268,7 @@ class HabitAnalysis(View):
             'weekly_struggled_most': weekly_struggled_most,
             'longest_all_streak': longest_all_streak,
             'longest_current_all_streak': longest_current_all_streak,
-            'completed_habits': completed_habits
+            'completed_habits': completed_habits,
         }
 
         return render(request, 'analysis.html', context)

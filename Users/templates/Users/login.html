@@ -11,6 +11,14 @@
         padding: 0 !important;
     }
 
+    /* Для телефонов */
+    @media (max-width: 768px) {
+        html body {
+            background: url('{% static "images/login_mobile_bg.jpg" %}') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+    }
+
     /* Убираем возможные градиенты и наложения */
     html body::before,
     html body::after {
@@ -18,22 +26,17 @@
         content: none !important;
     }
 
-    /* Оставляем контент видимым */
     .content {
         display: block !important;
     }
 
-    /* Контейнер для поля ввода и ошибки */
     .input-wrapper {
         display: flex;
         flex-direction: column;
         width: 100%;
     }
 
-    /* Поле ввода */
-    .input-wrapper input,
-    .input-wrapper select,
-    .input-wrapper textarea {
+    .input-wrapper input {
         width: 100%;
         padding: 12px;
         border: 2px solid #D6BDA8;
@@ -44,7 +47,6 @@
         box-sizing: border-box;
     }
 
-    /* Контейнер для ошибки - ПОД полем */
     .error-container {
         min-height: 25px;
         margin-top: 5px;
@@ -59,7 +61,6 @@
         text-align: left;
     }
 
-    /* Стили для единого сообщения об ошибке */
     .alert-error {
         background-color: rgba(231, 76, 60, 0.9);
         color: white;
@@ -72,7 +73,6 @@
         text-align: center;
     }
 
-    /* Исправляем выравнивание */
     .col-sm-3 {
         width: 25%;
         float: left;
@@ -112,7 +112,6 @@
         margin-left: 25%;
     }
 
-    /* КНОПКИ - СВЕТЛЫЕ И ВИДИМЫЕ */
     .btn-block {
         width: 100%;
         margin-top: 10px;
@@ -138,7 +137,6 @@
         box-shadow: 0 4px 12px rgba(214, 189, 168, 0.5);
     }
 
-    /* Ссылка регистрации */
     .card-footer a {
         color: #D6BDA8 !important;
         font-weight: bold;
@@ -148,6 +146,22 @@
 
     .card-footer a:hover {
         color: #F3F4F5 !important;
+        text-decoration: underline;
+    }
+
+    .forgot-password {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .forgot-password a {
+        color: #D6BDA8;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .forgot-password a:hover {
+        color: #F3F4F5;
         text-decoration: underline;
     }
 </style>
@@ -160,7 +174,6 @@
                 <h2 class="card-header text-center">Вход</h2>
                 <div class="card-body">
 
-                    <!-- Единая плашка с ошибкой из контекста -->
                     {% if error %}
                         <div class="alert-error">
                             {{ error }}
@@ -190,6 +203,10 @@
 
                         <div class="col-sm-6 offset-sm-3">
                             <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="{% url 'password_reset' %}">Забыли пароль?</a>
                         </div>
                     </form>
                 </div>
