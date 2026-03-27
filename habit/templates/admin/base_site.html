@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+    <a href="{% url 'admin:index' %}">Панель управления oFp</a>
+</div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block extrahead %}
+<style>
+    #header {
+        background-color: #262C3C;
+        color: #D6BDA8;
+    }
+    #branding h1, #branding h1 a:link, #branding h1 a:visited {
+        color: #D6BDA8;
+    }
+    .module h2, .module caption, .inline-group h2 {
+        background: #262C3C;
+        color: #D6BDA8;
+    }
+    a:link, a:visited {
+        color: #D6BDA8;
+    }
+    div.breadcrumbs {
+        background: #262C3C;
+        color: #D6BDA8;
+    }
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: #262C3C;
+        color: #D6BDA8;
+        border: 1px solid #D6BDA8;
+    }
+    .button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+        background: #D6BDA8;
+        color: #262C3C;
+    }
+    .selector-chosen h2 {
+        background: #262C3C !important;
+        color: #D6BDA8 !important;
+    }
+</style>
+{% endblock %}

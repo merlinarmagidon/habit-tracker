@@ -125,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'habit/static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -147,11 +147,38 @@ LOGOUT_REDIRECT_URL = 'login'
 
 
 # Email settings (для сброса пароля)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Письма в консоль для теста
-# Для реальной отправки раскомментируйте и настройте:
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Настройки админки
+ADMIN_SITE_HEADER = "Панель управления oFp"
+ADMIN_SITE_TITLE = "oFp - Ocean of possibilities"
+ADMIN_INDEX_TITLE = "Добро пожаловать в панель управления"
+
+
+# Для продакшена на PythonAnywhere (раскомментировать при деплое)
+# if 'PYTHONANYWHERE_DOMAIN' in os.environ:
+#     DEBUG = False
+#     ALLOWED_HOSTS = [f'{os.environ["PYTHONANYWHERE_DOMAIN"]}']
+#
+#     STATIC_URL = '/static/'
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+#
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
+# Настройки админки
+ADMIN_SITE_HEADER = "Панель управления oFp"
+ADMIN_SITE_TITLE = "oFp - Ocean of possibilities"
+ADMIN_INDEX_TITLE = "Добро пожаловать в панель управления"
+
+# Переименование приложений в админке
+APP_LABELS = {
+    'auth': 'Пользователи и группы',
+    'habit': 'Привычки',
+    'Users': 'Пользователи',
+}
