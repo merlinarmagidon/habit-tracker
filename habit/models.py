@@ -7,106 +7,92 @@ from .utils import convert_period_to_days
 
 # ==============================================
 # МОДЕЛЬ ПРИВЫЧКИ
-# Самая главная модель, тут хранятся все привычки пользователей
 # ==============================================
 class Habit(models.Model):
-    """
-    Тут лежат привычки. Название, частота, период и т.д.
-    Когда создаешь привычку, некоторые поля заполняются сами (например, количество задач).
-    """
+    """Модель привычки"""
 
-    name = models.CharField(max_length=255)  # Название привычки, типа "Чистка зубов"
-    frequency = models.IntegerField(default=1)  # Сколько раз в период делать (например, 2 раза в неделю)
-    period = models.CharField(max_length=255)  # Период: daily, weekly, monthly, annual
-    goal = models.IntegerField(default=90)  # На сколько дней рассчитана привычка
-    num_of_tasks = models.IntegerField()  # Всего задач (высчитывается автоматом)
-    notes = models.CharField(max_length=255, default=None)  # Заметки пользователя
-    creation_time = models.DateTimeField(auto_now_add=True)  # Когда создали
-    start_date = models.DateTimeField(null=True, blank=True)  # С какого числа начинаем
-    completion_date = models.DateTimeField(null=True, blank=True)  # Когда закончится (высчитывается)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Кто создал, связь с пользователем
+    # Выбор периода для фильтра в админке
+    PERIOD_CHOICES = [
+        ('daily', 'Ежедневная'),
+        ('weekly', 'Еженедельная'),
+        ('monthly', 'Ежемесячная'),
+        ('annual', 'Ежегодная'),
+    ]
+
+    name = models.CharField('Название', max_length=255)
+    frequency = models.IntegerField('Частота', default=1)
+    period = models.CharField('Период', max_length=255, choices=PERIOD_CHOICES)
+    goal = models.IntegerField('Цель (дни)', default=90)
+    num_of_tasks = models.IntegerField('Количество задач')
+    notes = models.CharField('Заметки', max_length=255, default=None, blank=True)
+    creation_time = models.DateTimeField('Время создания', auto_now_add=True)
+    start_date = models.DateTimeField('Дата начала', null=True, blank=True)
+    completion_date = models.DateTimeField('Дата завершения', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+
+    class Meta:
+        verbose_name = 'Привычка'
+        verbose_name_plural = 'Привычки'
+        ordering = ['-creation_time']
+
+    def __str__(self):
+        return self.name
 
     def save(self, *args, **kwargs):
-        """
-        Переопределил метод сохранения, чтобы некоторые поля заполнялись сами.
-        Раньше я их вручную в коде заполнял, но так удобнее.
-        """
-
-        # Приводим название к нижнему регистру, чтобы не было дублей типа "Чтение" и "чтение"
         self.name = self.name.lower()
-
-        # Если дата завершения не указана - вычисляем её из даты начала и цели
         if not self.completion_date:
             self.completion_date = self.start_date + timedelta(days=self.goal)
-
-        # Считаем количество задач
-        # Сначала узнаем, сколько дней в одном периоде
         num_of_period = convert_period_to_days(self.period)
         if not self.num_of_tasks:
-            # Формула: (цель / длину периода) * частоту
             self.num_of_tasks = (self.goal // num_of_period) * self.frequency
-
-        # Вызываем родительский метод сохранения
         super().save(*args, **kwargs)
 
 
 # ==============================================
 # МОДЕЛЬ ЗАДАЧ
-# Каждая задача - это одно выполнение привычки
-# Например, если привычка "Чистка зубов" на 30 дней, то будет 30 задач
 # ==============================================
 class TaskTracker(models.Model):
-    """
-    Тут хранятся все задачи, которые нужно выполнить.
-    Для каждой привычки создается куча задач (по количеству num_of_tasks).
-    """
+    """Модель задач"""
 
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE)  # К какой привычке относится
-    start_date = models.DateTimeField(null=True, blank=True)  # Когда можно начинать
-    due_date = models.DateTimeField(null=True, blank=True)  # Дедлайн
-    task_number = models.IntegerField()  # Номер задачи (1, 2, 3...)
-    task_status = models.CharField(max_length=255)  # Статус: In progress, Completed, Failed
-    task_completion_date = models.DateTimeField(null=True, blank=True)  # Когда реально выполнили
+    # Выбор статуса для фильтра в админке
+    STATUS_CHOICES = [
+        ('In progress', 'В процессе'),
+        ('Completed', 'Выполнено'),
+        ('Failed', 'Провалено'),
+    ]
+
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, verbose_name='Привычка', related_name='tasks')
+    start_date = models.DateTimeField('Дата начала', null=True, blank=True)
+    due_date = models.DateTimeField('Дедлайн', null=True, blank=True)
+    task_number = models.IntegerField('Номер задачи')
+    task_status = models.CharField('Статус', max_length=255, choices=STATUS_CHOICES)
+    task_completion_date = models.DateTimeField('Дата выполнения', null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачи'
+        ordering = ['task_number']
+
+    def __str__(self):
+        return f"Задача {self.task_number} - {self.habit.name}"
 
     @classmethod
     def create_tasks(cls, habit, n=0):
-        """
-        Создает все задачи для привычки.
-        Раньше я это вручную делал, потом вынес в отдельную функцию.
-
-        Алгоритм:
-        1. Вычисляем промежуток между задачами (goal / num_of_tasks)
-        2. Для каждой задачи считаем start_date и due_date
-        3. Создаем запись в базе
-        """
-
-        # Считаем, через сколько дней/часов должна появляться следующая задача
-        time_jump = habit.goal / habit.num_of_tasks  # В днях
-        time_skip = timedelta(hours=time_jump * 24)  # Переводим в timedelta
-
-        # Стартуем от даты начала привычки
+        time_jump = habit.goal / habit.num_of_tasks
+        time_skip = timedelta(hours=time_jump * 24)
         due_date = start_date = habit.start_date
-        default = 'In progress'  # Статус по умолчанию
-
-        # Создаем задачи по одной
+        default = 'In progress'
         for i in range(n + 1, habit.num_of_tasks + (n + 1)):
-            due_date += time_skip  # Увеличиваем дедлайн
+            due_date += time_skip
             if i == n + 1:
-                current_start_date = start_date  # Для первой задачи дата начала = start_date привычки
+                current_start_date = start_date
             else:
-                current_start_date += time_skip  # Для остальных - сдвигаем
-
+                current_start_date += time_skip
             cls.objects.create(habit=habit, due_date=due_date, task_number=i,
                                task_status=default, start_date=current_start_date)
 
     @classmethod
     def update_failed_tasks(cls, user_id):
-        """
-        Ищет все задачи пользователя со статусом 'In progress',
-        у которых due_date уже прошел.
-        Меняет статус на 'Failed' и сохраняет дату завершения = due_date.
-        Возвращает списки id обновленных привычек и задач.
-        """
         updated_habit_ids = []
         updated_task_ids = []
         tasks_to_update = cls.objects.filter(habit__user_id=user_id,
@@ -122,35 +108,31 @@ class TaskTracker(models.Model):
 
 
 # ==============================================
-# МОДЕЛЬ СЕРИИ (СТРИК)
-# Считает, сколько дней/недель подряд пользователь выполняет привычку
+# МОДЕЛЬ СЕРИИ
 # ==============================================
 class Streak(models.Model):
-    """
-    Серия - это сколько раз подряд пользователь выполнил задачу.
-    Если пропустил - серия сбрасывается.
-    """
+    """Модель серий"""
 
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, related_name='streak')
-    num_of_completed_tasks = models.IntegerField(default=0)  # Сколько всего задач выполнено
-    num_of_failed_tasks = models.IntegerField(default=0)  # Сколько всего задач провалено
-    longest_streak = models.IntegerField(default=0)  # Самая длинная серия
-    current_streak = models.IntegerField(default=0)  # Текущая серия
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, verbose_name='Привычка', related_name='streak')
+    num_of_completed_tasks = models.IntegerField('Выполнено задач', default=0)
+    num_of_failed_tasks = models.IntegerField('Провалено задач', default=0)
+    longest_streak = models.IntegerField('Самая длинная серия', default=0)
+    current_streak = models.IntegerField('Текущая серия', default=0)
+
+    class Meta:
+        verbose_name = 'Серия'
+        verbose_name_plural = 'Серии'
+
+    def __str__(self):
+        return f"Серия {self.habit.name} - {self.current_streak} дней"
 
     def save(self, *args, **kwargs):
-        """
-        Когда сохраняем серию, проверяем: если текущая серия стала длиннее,
-        чем была самая длинная - обновляем рекорд.
-        """
         if self.current_streak > self.longest_streak:
             self.longest_streak = self.current_streak
         super().save(*args, **kwargs)
 
     @classmethod
     def num_completed_tasks(cls, habit):
-        """
-        Считает, сколько задач выполнено, и обновляет это поле в серии.
-        """
         completed_num = TaskTracker.objects.filter(habit=habit, task_status='Completed').count()
         streak = habit.streak.first()
         streak.num_of_completed_tasks = completed_num
@@ -158,11 +140,6 @@ class Streak(models.Model):
 
     @classmethod
     def update_streak(cls, habit_ids):
-        """
-        Когда задача провалена:
-        1. Увеличиваем счетчик проваленных задач
-        2. Сбрасываем текущую серию в 0
-        """
         for habit_id in habit_ids:
             habit_streak = cls.objects.get(habit_id=habit_id)
             habit_streak.num_of_failed_tasks += 1
@@ -172,29 +149,39 @@ class Streak(models.Model):
 
 # ==============================================
 # МОДЕЛЬ ДОСТИЖЕНИЙ
-# Пользователь получает их за определенные успехи (серия 7 дней, 14 дней и т.д.)
 # ==============================================
 class Achievement(models.Model):
-    """
-    Достижения бывают двух типов:
-    1. За выполнение определенного количества дней подряд (7, 14, 30 дней)
-    2. За прерывание серии ("Break The Habit") - когда пользователь срывается
-    """
+    """Модель достижений"""
 
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, related_name='achievement')
-    streak_length = models.IntegerField(default=0)  # Длина серии, за которую дали достижение
-    title = models.CharField(max_length=255)  # Название достижения
-    date = models.DateTimeField(null=True, blank=True)  # Когда получили
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, verbose_name='Привычка', related_name='achievement')
+    streak_length = models.IntegerField('Длина серии', default=0)
+    title = models.CharField('Название', max_length=255)
+    date = models.DateTimeField('Дата получения', null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Достижение'
+        verbose_name_plural = 'Достижения'
+        ordering = ['-date']
+
+    def __str__(self):
+        # Переводим названия достижений для отображения в админке
+        titles = {
+            '7-Day Streak': '7-дневная серия',
+            '14-Day Streak': '14-дневная серия',
+            '30-Day Streak': '30-дневная серия',
+            '1-Week Streak': '1-недельная серия',
+            "2-Week's Streak": '2-недельная серия',
+            "4-Week's Streak": '4-недельная серия',
+            '1-Month Streak': '1-месячная серия',
+            "2-Month's Streak": '2-месячная серия',
+            "4-Month's Streak": '4-месячная серия',
+            'Break The Habit': 'Прерывание привычки',
+        }
+        return titles.get(self.title, self.title)
 
     @classmethod
     def update_achievements(cls, tasks):
-        """
-        Когда пользователь проваливает задачу, проверяем:
-        1. Не было ли уже достижения "Break The Habit" для предыдущей задачи
-        2. Если была текущая серия > 0 - создаем достижение
-        """
         for task in tasks:
-            # Проверяем, не было ли уже провалено предыдущее задание (чтобы не дублировать)
             if task.task_number > 1:
                 try:
                     prev_task = TaskTracker.objects.get(
@@ -206,81 +193,73 @@ class Achievement(models.Model):
                 except TaskTracker.DoesNotExist:
                     pass
             streak = task.habit.streak.get()
-            # Если была серия (current_streak != 0) - создаем достижение
             if streak and streak.current_streak != 0:
-                title = 'Break The Habit'
+                title = 'Прерывание привычки'
                 streak_length = streak.current_streak if streak else 0
                 cls.objects.create(habit=task.habit, date=task.due_date,
                                    title=title, streak_length=streak_length)
 
     @classmethod
     def rewards_streaks(cls, habit_id, streak):
-        """
-        Проверяем, не достигла ли текущая серия одного из порогов:
-        - для ежедневных: 7, 14, 30 дней
-        - для еженедельных: 1, 2, 4 недели
-        - для ежемесячных: 1, 2, 4 месяца
-        Если достигла - создаем соответствующее достижение.
-        """
         habit = Habit.objects.get(pk=habit_id)
 
-        # Ежедневные достижения
         if streak.current_streak / habit.frequency == 7 and habit.period == 'daily':
-            title = '7-Day Streak'
+            title = '7-дневная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if streak.current_streak / habit.frequency == 14 and habit.period == 'daily':
-            title = '14-Day Streak'
+            title = '14-дневная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if streak.current_streak / habit.frequency == 30 and habit.period == 'daily':
-            title = '30-Day Streak'
+            title = '30-дневная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
 
-        # Еженедельные достижения
         if habit.period == 'weekly' and (streak.current_streak / habit.frequency) == 1:
-            title = '1-Week Streak'
+            title = '1-недельная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if (streak.current_streak / habit.frequency) == 2 and habit.period == 'weekly':
-            title = "2-Week's Streak"
+            title = '2-недельная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if (streak.current_streak / habit.frequency) == 4 and habit.period == 'weekly':
-            title = "4-Week's Streak"
+            title = '4-недельная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
 
-        # Ежемесячные достижения
         if streak.current_streak // habit.frequency == 1 and habit.period == 'monthly':
-            title = '1-Month Streak'
+            title = '1-месячная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if streak.current_streak // habit.frequency == 2 and habit.period == 'monthly':
-            title = "2-Month's Streak"
+            title = '2-месячная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
         if streak.current_streak // habit.frequency == 4 and habit.period == 'monthly':
-            title = "4-Month's Streak"
+            title = '4-месячная серия'
             cls.objects.create(habit=habit, date=timezone.now(), title=title,
                                streak_length=streak.current_streak)
 
 
 # ==============================================
 # МОДЕЛЬ ШАБЛОНОВ ПРИВЫЧЕК
-# Готовые привычки, которые пользователь может выбрать
 # ==============================================
 class PredefinedHabit(models.Model):
-    """
-    Тут хранятся готовые привычки (Упражнения, Чтение, Медитация и т.д.)
-    Не привязаны к конкретному пользователю - общие для всех.
-    """
+    """Шаблоны привычек"""
+
+    PERIOD_CHOICES = [
+        ('daily', 'Ежедневная'),
+        ('weekly', 'Еженедельная'),
+        ('monthly', 'Ежемесячная'),
+        ('annual', 'Ежегодная'),
+    ]
 
     name = models.CharField('Название', max_length=255)
     description = models.TextField('Описание', blank=True)
     frequency = models.IntegerField('Частота', default=1)
-    period = models.CharField('Период', max_length=20, default='daily')
+    period = models.CharField('Период', max_length=20, choices=PERIOD_CHOICES, default='daily')
     goal = models.IntegerField('Цель (дни)', default=30)
     notes = models.TextField('Заметки', blank=True)
     category = models.CharField('Категория', max_length=100, blank=True)
@@ -297,15 +276,11 @@ class PredefinedHabit(models.Model):
 
 # ==============================================
 # МОДЕЛЬ ТЕМЫ ОФОРМЛЕНИЯ
-# Для кастомизации внешнего вида (пока не используется активно)
 # ==============================================
 class Theme(models.Model):
-    """
-    Позволяет пользователю настраивать цвета интерфейса.
-    Пока не доделал, но основа есть.
-    """
+    """Темы оформления"""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='themes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='themes')
     name = models.CharField('Название темы', max_length=100)
     primary_color = models.CharField('Основной цвет', max_length=7, default='#262C3C')
     secondary_color = models.CharField('Вторичный цвет', max_length=7, default='#D6BDA8')
@@ -324,13 +299,9 @@ class Theme(models.Model):
 
 # ==============================================
 # НАСТРОЙКИ УСТРОЙСТВ
-# Хранит информацию о том, с какого устройства зашел пользователь
 # ==============================================
 class DeviceSettings(models.Model):
-    """
-    Тут лежат настройки для разных устройств (компьютер, планшет, телефон).
-    Чтобы сайт хорошо выглядел везде.
-    """
+    """Настройки устройств"""
 
     DEVICE_TYPES = [
         ('desktop', 'Компьютер'),
@@ -338,7 +309,8 @@ class DeviceSettings(models.Model):
         ('mobile', 'Телефон'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='device_settings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь',
+                             related_name='device_settings')
     device_type = models.CharField('Тип устройства', max_length=50, choices=DEVICE_TYPES)
     browser = models.CharField('Браузер', max_length=100)
     screen_width = models.IntegerField('Ширина экрана')
@@ -356,13 +328,9 @@ class DeviceSettings(models.Model):
 
 # ==============================================
 # ШАБЛОНЫ МАКЕТОВ
-# Для разных вариантов расположения элементов на странице
 # ==============================================
 class LayoutTemplate(models.Model):
-    """
-    Заготовки для разных вариантов расположения элементов.
-    Пока не используется, но может пригодиться для развития.
-    """
+    """Шаблоны макетов"""
 
     name = models.CharField('Название шаблона', max_length=100)
     description = models.TextField('Описание', blank=True)
@@ -381,13 +349,9 @@ class LayoutTemplate(models.Model):
 
 # ==============================================
 # ИЗОБРАЖЕНИЯ
-# Все картинки, которые используются в приложении
 # ==============================================
 class ImageAsset(models.Model):
-    """
-    Тут хранятся все изображения: иконки, фоны, логотипы.
-    Разделены по категориям для удобства.
-    """
+    """Изображения"""
 
     CATEGORIES = [
         ('icon', 'Иконка'),

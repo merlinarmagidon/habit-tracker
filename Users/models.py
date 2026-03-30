@@ -10,25 +10,50 @@ class Profile(models.Model):
     """
     Тут хранятся дополнительные данные о пользователе, которых нет в стандартной модели User.
     Связано с User через OneToOneField - у одного юзера может быть только один профиль.
-
-    Сначала я пытался хранить все в модели User, но потом решил расширить.
     """
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255)  # Полное имя (first_name + last_name)
-    active_habit = models.IntegerField(default=0)  # Сколько активных привычек у пользователя
-    email = models.EmailField(default="unknown@example.com")  # Email (дублируем из User для удобства)
-    date_joined = models.DateTimeField(null=True, blank=True)  # Дата регистрации (тоже дублируем)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь'
+    )
+    full_name = models.CharField(
+        'Полное имя',
+        max_length=255,
+        blank=True,
+        help_text='Автоматически заполняется из имени и фамилии'
+    )
+    active_habit = models.IntegerField(
+        'Активных привычек',
+        default=0,
+        help_text='Количество активных привычек пользователя'
+    )
+    email = models.EmailField(
+        'Электронная почта',
+        default="unknown@example.com",
+        help_text='Дублируется из модели User для удобства'
+    )
+    date_joined = models.DateTimeField(
+        'Дата регистрации',
+        null=True,
+        blank=True,
+        help_text='Дублируется из модели User для удобства'
+    )
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+
+    def __str__(self):
+        return f"Профиль {self.user.username}"
 
     def save(self, *args, **kwargs):
         """
         Когда сохраняем профиль, автоматически заполняем поля на основе данных пользователя.
         Чтобы не делать это вручную каждый раз.
-
-        Проблема: если пользователь меняет имя в админке, в профиле оно должно обновиться.
         """
         # Собираем полное имя из имени и фамилии
-        self.full_name = f"{self.user.first_name} {self.user.last_name}"
+        self.full_name = f"{self.user.first_name} {self.user.last_name}".strip()
         # Считаем сколько у пользователя привычек
         self.active_habit = Habit.objects.filter(user=self.user).count()
         # Копируем email из модели User
