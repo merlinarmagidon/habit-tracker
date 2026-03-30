@@ -162,20 +162,20 @@ ADMIN_INDEX_TITLE = "Добро пожаловать в панель управ�
 
 
 # Для продакшена на PythonAnywhere (раскомментировать при деплое)
-# if 'PYTHONANYWHERE_DOMAIN' in os.environ:
-#     DEBUG = False
-#     ALLOWED_HOSTS = [f'{os.environ["PYTHONANYWHERE_DOMAIN"]}']
-#
-#     STATIC_URL = '/static/'
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-#
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
+ if 'PYTHONANYWHERE_DOMAIN' in os.environ:
+     DEBUG = False
+     ALLOWED_HOSTS = [f'{os.environ["PYTHONANYWHERE_DOMAIN"]}']
+
+     STATIC_URL = '/static/'
+     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+     DATABASES = {
+         'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+         }
+     }
 # Настройки админки
 ADMIN_SITE_HEADER = "Панель управления oFp"
 ADMIN_SITE_TITLE = "oFp - Ocean of possibilities"
