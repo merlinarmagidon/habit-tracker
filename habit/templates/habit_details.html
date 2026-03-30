@@ -56,11 +56,11 @@
                             <div class="col-md-12">
                                 <table class="table">
                                     <thead>
-                                         <tr>
+                                        <tr>
                                             <th>№</th>
                                             <th>Статус</th>
                                             <th>Дата выполнения</th>
-                                         </tr>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         {% for task in tasks %}
@@ -85,18 +85,31 @@
                             <div class="col-md-12">
                                 <table class="table">
                                     <thead>
-                                         <tr>
+                                        <tr>
                                             <th>№</th>
-                                            <th>Серия</th>
+                                            <th>Название</th>
                                             <th>Дата</th>
-                                         </tr>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        {% for streak in achievement %}
+                                        {% for streak_item in achievement %}
                                             <tr>
                                                 <td>{{ forloop.counter }}</td>
-                                                <td>{{ streak.title }}</td>
-                                                <td>{{ streak.date|date:"d.m.Y H:i" }}</td>
+                                                <td>
+                                                    {% if streak_item.title == '7-Day Streak' %}7-дневная серия
+                                                    {% elif streak_item.title == '14-Day Streak' %}14-дневная серия
+                                                    {% elif streak_item.title == '30-Day Streak' %}30-дневная серия
+                                                    {% elif streak_item.title == '1-Week Streak' %}1-недельная серия
+                                                    {% elif streak_item.title == "2-Week's Streak" %}2-недельная серия
+                                                    {% elif streak_item.title == "4-Week's Streak" %}4-недельная серия
+                                                    {% elif streak_item.title == '1-Month Streak' %}1-месячная серия
+                                                    {% elif streak_item.title == "2-Month's Streak" %}2-месячная серия
+                                                    {% elif streak_item.title == "4-Month's Streak" %}4-месячная серия
+                                                    {% elif streak_item.title == 'Break The Habit' %}Прерывание привычки
+                                                    {% else %}{{ streak_item.title }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ streak_item.date|date:"d.m.Y H:i" }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
