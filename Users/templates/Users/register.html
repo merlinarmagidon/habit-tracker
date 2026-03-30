@@ -44,19 +44,20 @@
         box-sizing: border-box;
     }
 
-    /* Контейнер для ошибки - ПОД полем */
+    /* Контейнер для ошибки - ПОД полем, по центру */
     .error-container {
-        min-height: 25px;
+        min-height: 30px;
         margin-top: 5px;
         margin-bottom: 0;
         width: 100%;
+        text-align: center;
     }
 
     .text-danger {
         color: #ff6b6b !important;
         font-size: 13px;
         display: block;
-        text-align: left;
+        text-align: center;
     }
 
     /* Исправляем выравнивание */
@@ -87,7 +88,7 @@
         padding-right: 15px;
     }
 
-    /* КНОПКА - СВЕТЛАЯ И ВИДИМАЯ */
+    /* Кнопка */
     .btn-block {
         width: 100%;
         margin-top: 10px;
@@ -111,19 +112,6 @@
         border: 2px solid #D6BDA8 !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(214, 189, 168, 0.5);
-    }
-
-    /* Ссылка входа */
-    .card-footer a {
-        color: #D6BDA8 !important;
-        font-weight: bold;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .card-footer a:hover {
-        color: #F3F4F5 !important;
-        text-decoration: underline;
     }
 </style>
 {% endblock %}
