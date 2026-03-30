@@ -9,32 +9,29 @@
         margin: 0 !important;
         padding: 0 !important;
     }
+    html body::before, html body::after { display: none !important; content: none !important; }
 
-    html body::before,
-    html body::after {
-        display: none !important;
-        content: none !important;
-    }
-
-    /* Увеличен отступ от логотипа */
-    .content {
-        padding-top: 120px !important;
-    }
+    .content { padding-top: 120px !important; }
 
     .guest-container {
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
         flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
         align-items: center;
-        justify-content: flex-start;
         text-align: center;
-        min-height: auto;
         padding: 20px;
     }
 
     .guest-title {
         font-size: 42px;
         color: #D6BDA8;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         margin-bottom: 30px;
         font-weight: bold;
     }
@@ -48,40 +45,30 @@
         font-size: 22px;
         font-weight: bold;
         cursor: pointer;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-block;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     }
-
     .btn-try:hover {
         background-color: #262C3C;
         color: #D6BDA8;
         border: 3px solid #D6BDA8;
+        -webkit-transform: translateY(-3px);
+        -ms-transform: translateY(-3px);
         transform: translateY(-3px);
     }
 
     @media (max-width: 768px) {
-        .content {
-            padding-top: 100px !important;
-        }
-        .guest-title {
-            font-size: 32px;
-        }
-        .btn-try {
-            padding: 12px 40px;
-            font-size: 20px;
-        }
+        .content { padding-top: 100px !important; }
+        .guest-title { font-size: 32px; }
+        .btn-try { padding: 12px 40px; font-size: 20px; }
     }
-
     @media (max-width: 480px) {
-        .guest-title {
-            font-size: 28px;
-        }
-        .btn-try {
-            padding: 10px 30px;
-            font-size: 18px;
-        }
+        .guest-title { font-size: 28px; }
+        .btn-try { padding: 10px 30px; font-size: 18px; }
     }
 </style>
 {% endblock %}

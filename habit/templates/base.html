@@ -57,7 +57,12 @@
             background: url('{% static "images/default_bg.jpg" %}') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
             color: #F3F4F5;
             -webkit-font-smoothing: antialiased;
@@ -80,12 +85,17 @@
         }
 
         header {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -ms-flex-pack: distribute;
             justify-content: space-around;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
             padding: 10px 20px;
             background-color: rgba(38, 44, 60, 0.9);
-            background-color: #262C3C; /* Для старых браузеров */
+            background-color: #262C3C;
             position: relative;
             width: 100%;
             backdrop-filter: blur(5px);
@@ -94,17 +104,23 @@
             margin-bottom: 40px;
         }
 
-        /* Контейнер для логотипа - ПОНИЖЕН */
+        /* Контейнер для логотипа */
         .logo-container {
             position: absolute;
             left: 50%;
-            transform: translateX(-50%);
             -webkit-transform: translateX(-50%);
             -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
             bottom: -200px;
             z-index: 10;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
         }
 
@@ -115,16 +131,19 @@
             background-color: transparent;
             padding: 0;
             box-shadow: none;
+            -o-object-fit: contain;
             object-fit: contain;
-            transition: transform 0.3s ease;
             -webkit-transition: -webkit-transform 0.3s ease;
-            -ms-transition: -ms-transform 0.3s ease;
+            transition: -webkit-transform 0.3s ease;
+            -o-transition: transform 0.3s ease;
+            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, -webkit-transform 0.3s ease;
         }
 
         .logo-img:hover {
-            transform: scale(1.05);
             -webkit-transform: scale(1.05);
             -ms-transform: scale(1.05);
+            transform: scale(1.05);
         }
 
         nav {
@@ -137,9 +156,16 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
         }
 
@@ -152,15 +178,15 @@
             color: #D6BDA8;
             font-size: 22px;
             font-weight: bold;
-            transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
-            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
             padding: 8px 16px;
             display: inline-block;
             border: 2px solid transparent;
             border-radius: 25px;
             background-color: rgba(38, 44, 60, 0.7);
-            background-color: #262C3C; /* Для старых браузеров */
+            background-color: #262C3C;
         }
 
         nav ul li a:hover,
@@ -169,14 +195,16 @@
             background-color: #D6BDA8;
             border-radius: 25px;
             border: 2px solid #D6BDA8;
-            transform: translateY(-2px);
             -webkit-transform: translateY(-2px);
             -ms-transform: translateY(-2px);
+            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(214, 189, 168, 0.3);
         }
 
         /* Контент */
         .content {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
             flex: 1;
             padding: 180px 20px 40px;
             text-align: center;
@@ -203,11 +231,16 @@
         /* Карточки */
         .add-habit-card, .streak-card, .home-streak-card, .completed-card {
             background-color: rgba(38, 44, 60, 0.9);
-            background-color: #262C3C; /* Для старых браузеров */
+            background-color: #262C3C;
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
             margin-bottom: 25px;
             border: 2px solid #D6BDA8;
@@ -239,9 +272,9 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
-            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
             margin: 6px;
@@ -251,9 +284,9 @@
         .btn:hover {
             background-color: #D6BDA8;
             color: #262C3C;
-            transform: translateY(-2px);
             -webkit-transform: translateY(-2px);
             -ms-transform: translateY(-2px);
+            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(214, 189, 168, 0.3);
         }
 
@@ -261,8 +294,15 @@
         .form-group {
             margin-bottom: 20px;
             width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
         }
 
@@ -291,11 +331,11 @@
             font-size: 15px;
             font-family: inherit;
             background-color: rgba(243, 244, 245, 0.1);
-            background-color: #2A3040; /* Для старых браузеров */
+            background-color: #2A3040;
             color: #F3F4F5;
-            transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
-            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
             margin: 0 auto;
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -313,7 +353,11 @@
 
         /* Для колонок в формах */
         .col-sm-8, .col-sm-9, .col-sm-4 {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
             width: 100%;
         }
@@ -367,11 +411,14 @@
             }
 
             nav ul {
+                -ms-flex-pack: distribute;
                 justify-content: space-around;
             }
 
             nav ul li {
                 margin: 6px 5px;
+                -webkit-box-flex: 1;
+                -ms-flex: 1;
                 flex: 1;
                 min-width: 130px;
             }
@@ -427,6 +474,9 @@
             }
 
             nav ul {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
                 flex-direction: column;
             }
 
@@ -438,6 +488,7 @@
             nav ul li a {
                 font-size: 16px;
                 padding: 9px 5px;
+                width: 100%;
             }
 
             .logo-img {
@@ -480,7 +531,7 @@
 
         .switcher-button {
             background-color: rgba(38, 44, 60, 0.8);
-            background-color: #262C3C; /* Для старых браузеров */
+            background-color: #262C3C;
             color: #D6BDA8;
             border: 2px solid #D6BDA8;
             border-radius: 12px;
@@ -488,9 +539,9 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
-            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
             margin: 6px;
             min-width: 160px;
         }
@@ -499,9 +550,9 @@
         .switcher-button.active {
             background-color: #D6BDA8;
             color: #262C3C;
-            transform: translateY(-2px);
             -webkit-transform: translateY(-2px);
             -ms-transform: translateY(-2px);
+            transform: translateY(-2px);
         }
 
         .table-responsive {
@@ -516,7 +567,7 @@
             border-collapse: collapse;
             margin-top: 20px;
             background-color: rgba(38, 44, 60, 0.8);
-            background-color: #262C3C; /* Для старых браузеров */
+            background-color: #262C3C;
             border: 2px solid #D6BDA8;
             border-radius: 12px;
             overflow: hidden;
@@ -539,7 +590,7 @@
 
         .alert {
             background-color: rgba(214, 189, 168, 0.9);
-            background-color: #D6BDA8; /* Для старых браузеров */
+            background-color: #D6BDA8;
             color: #262C3C;
             padding: 12px 18px;
             margin-bottom: 20px;
@@ -556,7 +607,7 @@
             height: 20px;
             border-radius: 10px;
             background-color: rgba(243, 244, 245, 0.2);
-            background-color: #3A4050; /* Для старых браузеров */
+            background-color: #3A4050;
             margin: 12px 0;
             border: 2px solid #D6BDA8;
             overflow: hidden;
@@ -566,9 +617,9 @@
             border-radius: 10px;
             background-color: #D6BDA8;
             height: 100%;
-            transition: width 0.5s ease;
             -webkit-transition: width 0.5s ease;
-            -ms-transition: width 0.5s ease;
+            -o-transition: width 0.5s ease;
+            transition: width 0.5s ease;
         }
 
         /* Clearfix для старых браузеров */
@@ -616,19 +667,15 @@
         {% block content %}{% endblock %}
     </main>
 
-    <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
-        <div style="background: rgba(38, 44, 60, 0.95); background: #262C3C; padding: 30px; border-radius: 15px; border: 3px solid #D6BDA8; max-width: 400px;">
+    <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center;">
+        <div style="background: rgba(38, 44, 60, 0.95); background: #262C3C; padding: 30px; border-radius: 15px; border: 3px solid #D6BDA8; max-width: 400px; width: 90%;">
             <h3 style="color: #D6BDA8; margin-bottom: 20px;">Подтверждение выхода</h3>
             <p style="color: #F3F4F5; margin-bottom: 25px;">Вы уверены, что хотите выйти из системы?</p>
-            <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                <button id="logout-cancel" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                    Отмена
-                </button>
+            <div style="display: -webkit-box; display: -ms-flexbox; display: flex; gap: 15px; -webkit-box-pack: end; -ms-flex-pack: end; justify-content: flex-end;">
+                <button id="logout-cancel" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 8px; cursor: pointer;">Отмена</button>
                 <form action="{% url 'logout' %}" method="post" id="logout-form-real">
                     {% csrf_token %}
-                    <button type="submit" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                        Выйти
-                    </button>
+                    <button type="submit" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer;">Выйти</button>
                 </form>
             </div>
         </div>
