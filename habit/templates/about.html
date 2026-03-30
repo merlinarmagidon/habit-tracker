@@ -3,33 +3,78 @@
 
 {% block page_styles %}
 <style>
+    /* Полностью переопределяем фон */
     html body {
-        background: url('{% static "images/default_bg.jpg" %}') no-repeat center center fixed !important;
-        background-size: cover !important;
+        background-color: #1f273a !important;
+        background-image: none !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 
+    html body::before,
+    html body::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Контент */
+    .content {
+        padding-top: 160px !important;
+        position: relative;
+        z-index: 6;
+    }
+
     .about-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        min-height: 80vh;
+        justify-content: center;
+        text-align: center;
         padding: 20px;
     }
 
+    .about-title {
+        font-size: 42px;
+        color: #D6BDA8;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 40px;
+        font-weight: bold;
+    }
+
+    /* Картинка с автоматическим размером */
     .about-image {
-        max-width: 90%;
-        width: auto;
+        width: 100%;
         height: auto;
-        border: none;
-        box-shadow: none;
-        border-radius: 0;
+        display: block;
+        max-width: 100%;
+        border: 0;
+        object-fit: contain;
+    }
+
+    @media (max-width: 1024px) {
+        .content {
+            padding-top: 140px !important;
+        }
+        .about-title {
+            font-size: 36px;
+        }
     }
 
     @media (max-width: 768px) {
-        .about-image {
-            max-width: 100%;
+        .content {
+            padding-top: 130px !important;
+        }
+        .about-title {
+            font-size: 32px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content {
+            padding-top: 120px !important;
+        }
+        .about-title {
+            font-size: 28px;
         }
     }
 </style>
@@ -37,6 +82,7 @@
 
 {% block content %}
 <div class="about-container">
+    <h1 class="about-title">О нас</h1>
     <img src="{% static 'images/about_us.jpg' %}" alt="О нас" class="about-image">
 </div>
 {% endblock %}
