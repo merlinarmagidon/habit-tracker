@@ -4,14 +4,25 @@
 {% block page_styles %}
 <style>
     html body {
-        background: url('{% static "images/guest_bg.jpg" %}') no-repeat center center fixed !important;
-        background-size: 100% 100% !important;
+        background: url('{% static "images/guest_bg.jpg" %}') no-repeat center bottom fixed !important;
+        background-size: auto !important;
+        background-color: #F3F4F5 !important;
         margin: 0 !important;
         padding: 0 !important;
     }
-    html body::before, html body::after { display: none !important; content: none !important; }
 
-    .content { padding-top: 120px !important; }
+    html body::before,
+    html body::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Контент */
+    .content {
+        padding-top: 160px !important;
+        position: relative;
+        z-index: 6;
+    }
 
     .guest-container {
         display: -webkit-box;
@@ -31,7 +42,7 @@
     .guest-title {
         font-size: 42px;
         color: #D6BDA8;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         margin-bottom: 30px;
         font-weight: bold;
     }
@@ -50,8 +61,9 @@
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-block;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     }
+
     .btn-try:hover {
         background-color: #262C3C;
         color: #D6BDA8;
@@ -61,14 +73,43 @@
         transform: translateY(-3px);
     }
 
-    @media (max-width: 768px) {
-        .content { padding-top: 100px !important; }
-        .guest-title { font-size: 32px; }
-        .btn-try { padding: 12px 40px; font-size: 20px; }
+    @media (max-width: 1024px) {
+        .content {
+            padding-top: 140px !important;
+        }
+        .guest-title {
+            font-size: 36px;
+        }
+        .btn-try {
+            padding: 12px 45px;
+            font-size: 20px;
+        }
     }
+
+    @media (max-width: 768px) {
+        .content {
+            padding-top: 130px !important;
+        }
+        .guest-title {
+            font-size: 32px;
+        }
+        .btn-try {
+            padding: 12px 40px;
+            font-size: 20px;
+        }
+    }
+
     @media (max-width: 480px) {
-        .guest-title { font-size: 28px; }
-        .btn-try { padding: 10px 30px; font-size: 18px; }
+        .content {
+            padding-top: 120px !important;
+        }
+        .guest-title {
+            font-size: 28px;
+        }
+        .btn-try {
+            padding: 10px 30px;
+            font-size: 18px;
+        }
     }
 </style>
 {% endblock %}
