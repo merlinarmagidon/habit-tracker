@@ -18,7 +18,7 @@
 
     .content {
         display: block !important;
-        padding-top: 80px !important; /* Отступ от логотипа */
+        padding-top: 80px !important;
     }
 
     .input-wrapper {
@@ -128,21 +128,40 @@
         box-shadow: 0 4px 12px rgba(214, 189, 168, 0.5);
     }
 
-    /* ССЫЛКИ ПОД КНОПКОЙ - БЕЗ ЛИНИЙ */
-    .login-links {
+    /* ССЫЛКА "ЗАБЫЛИ ПАРОЛЬ?" ПОД ПОЛЕМ ПАРОЛЯ - ПО ЦЕНТРУ */
+    .forgot-password {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        width: 100%;
     }
 
-    .login-links a {
+    .forgot-password a {
+        color: #D6BDA8;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .forgot-password a:hover {
+        color: #F3F4F5;
+        text-decoration: underline;
+    }
+
+    /* ССЫЛКА РЕГИСТРАЦИИ ПОД КНОПКОЙ - ПО ЦЕНТРУ */
+    .register-link {
+        text-align: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .register-link a {
         color: #D6BDA8;
         text-decoration: none;
         font-size: 14px;
         display: inline-block;
-        margin: 0 10px;
     }
 
-    .login-links a:hover {
+    .register-link a:hover {
         color: #F3F4F5;
         text-decoration: underline;
     }
@@ -183,14 +202,18 @@
                             </div>
                         </div>
 
+                        <!-- ССЫЛКА "ЗАБЫЛИ ПАРОЛЬ?" ПОД ПОЛЕМ ПАРОЛЯ - ПО ЦЕНТРУ -->
+                        <div class="forgot-password">
+                            <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                        </div>
+
                         <div class="col-sm-6 offset-sm-3">
                             <button type="submit" class="btn btn-primary btn-block">Войти</button>
                         </div>
                     </form>
 
-                    <!-- ССЫЛКИ ПОД КНОПКОЙ -->
-                    <div class="login-links">
-                        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                    <!-- ССЫЛКА РЕГИСТРАЦИИ ПОД КНОПКОЙ - ПО ЦЕНТРУ -->
+                    <div class="register-link">
                         <a href="{% url 'register' %}">Нет учётной записи? Зарегистрируйтесь здесь</a>
                     </div>
                 </div>
