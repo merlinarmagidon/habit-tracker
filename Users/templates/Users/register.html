@@ -3,35 +3,89 @@
 
 {% block page_styles %}
 <style>
+    /* Свой фон только для страницы регистрации */
     html body {
         background: url('{% static "images/login_bg.jpg" %}') no-repeat center center fixed !important;
         background-size: 100% 100% !important;
         margin: 0 !important;
         padding: 0 !important;
     }
+
     html body::before, html body::after { display: none !important; content: none !important; }
 
-    .content { display: block !important; }
+    .content { display: block !important; padding-top: 120px !important; }
 
     .input-wrapper { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -ms-flex-direction: column; flex-direction: column; width: 100%; }
     .input-wrapper input, .input-wrapper select, .input-wrapper textarea { width: 100%; padding: 12px; border: 2px solid #D6BDA8; border-radius: 10px; font-size: 16px; background-color: rgba(38,44,60,0.9); color: #F3F4F5; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
-    .error-container { min-height: 30px; margin-top: 5px; margin-bottom: 0; width: 100%; text-align: center; }
-    .text-danger { color: #ff6b6b !important; font-size: 13px; display: block; text-align: center; }
+    .error-container { min-height: 25px; margin-top: 5px; margin-bottom: 0; width: 100%; }
+    .text-danger { color: #ff6b6b !important; font-size: 13px; display: block; text-align: left; }
+
+    .alert-error { background-color: rgba(231,76,60,0.9); color: white; padding: 12px 18px; margin-bottom: 20px; border-radius: 10px; border: 2px solid #c0392b; font-weight: bold; font-size: 16px; text-align: center; }
 
     .col-sm-8 { width: 66.666%; float: left; padding-left: 15px; padding-right: 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
     .col-sm-4 { width: 33.333%; float: left; padding-left: 15px; padding-right: 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
     .row:after { content: ""; display: table; clear: both; }
     .text-right { text-align: right; padding-right: 15px; }
 
-    .btn-block { width: 100%; margin-top: 10px; }
-    .btn-primary { background-color: #D6BDA8 !important; color: #262C3C !important; border: 2px solid #262C3C !important; border-radius: 12px; padding: 12px 25px; font-size: 18px; font-weight: bold; cursor: pointer; -webkit-transition: all 0.3s ease; -o-transition: all 0.3s ease; transition: all 0.3s ease; }
-    .btn-primary:hover { background-color: #262C3C !important; color: #D6BDA8 !important; border: 2px solid #D6BDA8 !important; -webkit-transform: translateY(-2px); -ms-transform: translateY(-2px); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(214,189,168,0.5); }
+    /* Контейнер для кнопки - центрирование */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Кнопка регистрации - ТОЧНО ТАКОГО ЖЕ РАЗМЕРА КАК В login.html */
+    .btn-register {
+        background-color: #D6BDA8 !important;
+        color: #262C3C !important;
+        border: 2px solid #262C3C !important;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .btn-register:hover {
+        background-color: #262C3C !important;
+        color: #D6BDA8 !important;
+        border: 2px solid #D6BDA8 !important;
+        -webkit-transform: translateY(-2px);
+        -ms-transform: translateY(-2px);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(214,189,168,0.5);
+    }
+
+    /* Ссылка "Уже есть учётная запись?" */
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .login-link a {
+        color: #D6BDA8;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .login-link a:hover {
+        color: #F3F4F5;
+        text-decoration: underline;
+    }
 
     @media (max-width: 768px) {
         .col-sm-4, .col-sm-8 { width: 100%; float: none; text-align: center; }
         .text-right { text-align: center; }
-        .offset-sm-4 { margin-left: 0; }
+        .btn-register { max-width: 100%; }
     }
 </style>
 {% endblock %}
@@ -98,10 +152,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 offset-sm-4"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></div>
+
+                    <!-- Кнопка по центру, такого же размера как в login.html -->
+                    <div class="button-container">
+                        <button type="submit" class="btn-register">Зарегистрироваться</button>
+                    </div>
                 </form>
+
+                <div class="login-link">
+                    <a href="{% url 'login' %}">Уже есть учётная запись? Войти</a>
+                </div>
             </div>
-            <div class="card-footer text-center"><p class="mt-3">Уже есть учётная запись? <a href="{% url 'login' %}">Войти</a>.</p></div>
         </div>
     </div>
 </div>
