@@ -1,122 +1,266 @@
-{% extends "base.html" %}
 {% load static %}
-
-{% block page_styles %}
-<style>
-    html body {
-        background: url('{% static "images/guest_bg.jpg" %}') no-repeat center bottom fixed !important;
-        background-size: auto !important;
-        background-color: #F3F4F5 !important;
-        margin: 0 !important;
-        padding: 0 !important;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oFp - Ocean of possibilities</title>
+  <style>
+    @font-face {
+      font-family: 'Chalkboard SE Regular';
+      src: url('{% static "fonts/ChalkboardSE-Regular.ttf" %}') format('truetype');
+      src: local('Comic Sans MS'), local('Marker Felt'), local('Arial');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
     }
 
-    html body::before,
-    html body::after {
-        display: none !important;
-        content: none !important;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Контент */
+    html {
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Chalkboard SE Regular', 'Comic Sans MS', 'Marker Felt', Arial, sans-serif;
+      margin: 0;
+      background-color: #F3F4F5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #262C3C;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #262C3C;
+      position: relative;
+      width: 100%;
+    }
+
+    header img {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -170px;
+      width: 170px;
+      height: auto;
+      z-index: 10;
+      display: block;
+    }
+
+    nav {
+      width: 100%;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    nav ul li {
+      margin: 5px 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #D6BDA8;
+      font-size: 24px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      display: inline-block;
+      border: 2px solid transparent;
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      color: #ffffff;
+      background-color: rgba(214, 189, 168, 0.1);
+      border-radius: 4px;
+      border: 2px solid rgba(214, 189, 168, 0.3);
+    }
+
     .content {
-        padding-top: 160px !important;
-        position: relative;
-        z-index: 6;
+      flex: 1;
+      padding: 200px 20px 40px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .guest-container {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
+    .content h1 {
+      color: #D6BDA8;
+      font-size: 24px;
+      margin-bottom: 30px;
+      font-weight: normal;
     }
 
-    .guest-title {
-        font-size: 42px;
-        color: #D6BDA8;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        margin-bottom: 30px;
-        font-weight: bold;
-    }
-
+    /* Кнопка */
     .btn-try {
-        background-color: #D6BDA8;
-        color: #262C3C;
-        border: 3px solid #262C3C;
-        border-radius: 50px;
-        padding: 14px 50px;
-        font-size: 22px;
-        font-weight: bold;
-        cursor: pointer;
-        -webkit-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      background-color: #D6BDA8;
+      color: #262C3C;
+      border: 3px solid #262C3C;
+      border-radius: 50px;
+      padding: 14px 50px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     }
 
     .btn-try:hover {
-        background-color: #262C3C;
-        color: #D6BDA8;
-        border: 3px solid #D6BDA8;
-        -webkit-transform: translateY(-3px);
-        -ms-transform: translateY(-3px);
-        transform: translateY(-3px);
+      background-color: #262C3C;
+      color: #D6BDA8;
+      border: 3px solid #D6BDA8;
+      transform: translateY(-3px);
+    }
+
+    /* Фоновая картинка на всю ширину, автоматический размер */
+    .full-width-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-width: 100%;
+      border: 0;
+      object-fit: contain;
+      margin-top: 40px;
     }
 
     @media (max-width: 1024px) {
-        .content {
-            padding-top: 140px !important;
-        }
-        .guest-title {
-            font-size: 36px;
-        }
-        .btn-try {
-            padding: 12px 45px;
-            font-size: 20px;
-        }
+      .content {
+        padding: 180px 15px 30px;
+      }
+      .content h1 {
+        font-size: 22px;
+      }
+      .btn-try {
+        padding: 12px 45px;
+        font-size: 20px;
+      }
+      header img {
+        width: 150px;
+        bottom: -150px;
+      }
+      nav ul li a {
+        font-size: 22px;
+      }
     }
 
     @media (max-width: 768px) {
-        .content {
-            padding-top: 130px !important;
-        }
-        .guest-title {
-            font-size: 32px;
-        }
-        .btn-try {
-            padding: 12px 40px;
-            font-size: 20px;
-        }
+      header {
+        padding: 10px 5px;
+        flex-wrap: wrap;
+      }
+      nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      nav ul li {
+        margin: 8px 5px;
+        flex: 1;
+        min-width: 120px;
+      }
+      nav ul li a {
+        font-size: 18px;
+        padding: 8px 10px;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      .content {
+        padding: 150px 10px 20px;
+      }
+      .content h1 {
+        font-size: 20px;
+      }
+      .btn-try {
+        padding: 12px 40px;
+        font-size: 20px;
+      }
+      header img {
+        width: 120px;
+        bottom: -120px;
+      }
     }
 
     @media (max-width: 480px) {
-        .content {
-            padding-top: 120px !important;
-        }
-        .guest-title {
-            font-size: 28px;
-        }
-        .btn-try {
-            padding: 10px 30px;
-            font-size: 18px;
-        }
+      nav ul {
+        flex-direction: column;
+      }
+      nav ul li {
+        margin: 5px 0;
+        width: 100%;
+        min-width: auto;
+      }
+      nav ul li a {
+        font-size: 18px;
+        padding: 10px 5px;
+        width: 100%;
+      }
+      .content {
+        padding: 130px 5px 15px;
+      }
+      .content h1 {
+        font-size: 18px;
+      }
+      .btn-try {
+        padding: 10px 30px;
+        font-size: 18px;
+      }
+      header img {
+        width: 100px;
+        bottom: -100px;
+      }
     }
-</style>
-{% endblock %}
+  </style>
+</head>
+<body>
 
-{% block content %}
-<div class="guest-container">
-    <h1 class="guest-title">Погружаясь в новый мир.</h1>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'habit-home' %}">ГЛАВНАЯ</a></li>
+        <li><a href="{% url 'login' %}">ВОЙТИ</a></li>
+        <li><a href="{% url 'register' %}">СОЗДАТЬ АККАУНТ</a></li>
+        <li><a href="{% url 'about' %}">О НАС</a></li>
+        <li><a href="{% url 'contacts' %}">КОНТАКТЫ</a></li>
+      </ul>
+    </nav>
+    <img src="{% static 'images/logo.png' %}">
+  </header>
+
+  <div class="content">
+    <h1>Погружаюсь в новый мир.</h1>
     <a href="{% url 'register' %}" class="btn-try">Попробовать</a>
-</div>
-{% endblock %}
+  </div>
+
+  <img src="{% static 'images/guest_bg.jpg' %}"
+       alt="Полноразмерное изображение"
+       class="full-width-image"
+       loading="lazy">
+
+</body>
+</html>
