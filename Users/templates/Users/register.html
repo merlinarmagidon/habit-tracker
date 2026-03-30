@@ -18,10 +18,51 @@
     .input-wrapper { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -ms-flex-direction: column; flex-direction: column; width: 100%; }
     .input-wrapper input, .input-wrapper select, .input-wrapper textarea { width: 100%; padding: 12px; border: 2px solid #D6BDA8; border-radius: 10px; font-size: 16px; background-color: rgba(38,44,60,0.9); color: #F3F4F5; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
-    .error-container { min-height: 25px; margin-top: 5px; margin-bottom: 0; width: 100%; }
-    .text-danger { color: #ff6b6b !important; font-size: 13px; display: block; text-align: left; }
+    /* Контейнер для ошибки - ПО ЦЕНТРУ */
+    .error-container {
+        min-height: 25px;
+        margin-top: 5px;
+        margin-bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
 
-    .alert-error { background-color: rgba(231,76,60,0.9); color: white; padding: 12px 18px; margin-bottom: 20px; border-radius: 10px; border: 2px solid #c0392b; font-weight: bold; font-size: 16px; text-align: center; }
+    .text-danger {
+        color: #ff6b6b !important;
+        font-size: 13px;
+        display: block;
+        text-align: center;
+    }
+
+    /* Общие ошибки формы */
+    .non-field-errors {
+        background-color: rgba(231, 76, 60, 0.9);
+        color: white;
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 2px solid #c0392b;
+        font-weight: bold;
+        font-size: 14px;
+        text-align: center;
+        list-style: none;
+    }
+
+    .non-field-errors li {
+        list-style: none;
+    }
+
+    .alert-error {
+        background-color: rgba(231, 76, 60, 0.9);
+        color: white;
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 2px solid #c0392b;
+        font-weight: bold;
+        font-size: 16px;
+        text-align: center;
+    }
 
     .col-sm-8 { width: 66.666%; float: left; padding-left: 15px; padding-right: 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
     .col-sm-4 { width: 33.333%; float: left; padding-left: 15px; padding-right: 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
@@ -36,7 +77,7 @@
         margin-bottom: 20px;
     }
 
-    /* Кнопка регистрации - ТОЧНО ТАКОГО ЖЕ РАЗМЕРА КАК В login.html */
+    /* Кнопка регистрации */
     .btn-register {
         background-color: #D6BDA8 !important;
         color: #262C3C !important;
@@ -98,62 +139,100 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
+
+                    <!-- Общие ошибки формы -->
+                    {% if form.non_field_errors %}
+                        <div class="non-field-errors">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     <div class="form-group row">
                         <label for="{{ form.username.id_for_label }}" class="col-sm-4 col-form-label text-right">Имя пользователя:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.username }}
-                                <div class="error-container">{% for error in form.username.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.username.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="{{ form.first_name.id_for_label }}" class="col-sm-4 col-form-label text-right">Имя:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.first_name }}
-                                <div class="error-container">{% for error in form.first_name.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.first_name.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="{{ form.last_name.id_for_label }}" class="col-sm-4 col-form-label text-right">Фамилия:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.last_name }}
-                                <div class="error-container">{% for error in form.last_name.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.last_name.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="{{ form.email.id_for_label }}" class="col-sm-4 col-form-label text-right">Электронная почта:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.email }}
-                                <div class="error-container">{% for error in form.email.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.email.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="{{ form.password1.id_for_label }}" class="col-sm-4 col-form-label text-right">Пароль:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.password1 }}
-                                <div class="error-container">{% for error in form.password1.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.password1.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="{{ form.password2.id_for_label }}" class="col-sm-4 col-form-label text-right">Подтвердить пароль:</label>
                         <div class="col-sm-8">
                             <div class="input-wrapper">
                                 {{ form.password2 }}
-                                <div class="error-container">{% for error in form.password2.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}</div>
+                                <div class="error-container">
+                                    {% for error in form.password2.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Кнопка по центру, такого же размера как в login.html -->
                     <div class="button-container">
                         <button type="submit" class="btn-register">Зарегистрироваться</button>
                     </div>
