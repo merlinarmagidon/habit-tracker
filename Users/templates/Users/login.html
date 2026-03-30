@@ -3,7 +3,6 @@
 
 {% block page_styles %}
 <style>
-    /* Свой фон только для страницы входа */
     html body {
         background: url('{% static "images/login_bg.jpg" %}') no-repeat center center fixed !important;
         background-size: 100% 100% !important;
@@ -11,15 +10,6 @@
         padding: 0 !important;
     }
 
-    /* Для телефонов */
-    @media (max-width: 768px) {
-        html body {
-            background: url('{% static "images/login_mobile_bg.jpg" %}') no-repeat center center fixed !important;
-            background-size: cover !important;
-        }
-    }
-
-    /* Убираем возможные градиенты и наложения */
     html body::before,
     html body::after {
         display: none !important;
@@ -28,6 +18,7 @@
 
     .content {
         display: block !important;
+        padding-top: 80px !important; /* Отступ от логотипа */
     }
 
     .input-wrapper {
@@ -137,30 +128,21 @@
         box-shadow: 0 4px 12px rgba(214, 189, 168, 0.5);
     }
 
-    .card-footer a {
-        color: #D6BDA8 !important;
-        font-weight: bold;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .card-footer a:hover {
-        color: #F3F4F5 !important;
-        text-decoration: underline;
-    }
-
-    .forgot-password {
+    /* ССЫЛКИ ПОД КНОПКОЙ - БЕЗ ЛИНИЙ */
+    .login-links {
         text-align: center;
-        margin-top: 15px;
+        margin-top: 20px;
     }
 
-    .forgot-password a {
+    .login-links a {
         color: #D6BDA8;
         text-decoration: none;
         font-size: 14px;
+        display: inline-block;
+        margin: 0 10px;
     }
 
-    .forgot-password a:hover {
+    .login-links a:hover {
         color: #F3F4F5;
         text-decoration: underline;
     }
@@ -204,14 +186,13 @@
                         <div class="col-sm-6 offset-sm-3">
                             <button type="submit" class="btn btn-primary btn-block">Войти</button>
                         </div>
-
-                        <div class="forgot-password">
-                            <a href="{% url 'password_reset' %}">Забыли пароль?</a>
-                        </div>
                     </form>
-                </div>
-                <div class="card-footer text-center">
-                    <p class="mt-3">Нет учётной записи? <a href="{% url 'register' %}">Зарегистрируйтесь здесь</a>.</p>
+
+                    <!-- ССЫЛКИ ПОД КНОПКОЙ -->
+                    <div class="login-links">
+                        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                        <a href="{% url 'register' %}">Нет учётной записи? Зарегистрируйтесь здесь</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -280,6 +280,63 @@
             margin-bottom: 25px;
         }
     }
+    <style>
+    /* ... остальные стили ... */
+
+    /* Контейнер для кнопок-фильтров */
+    .filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    /* Стили для кнопок-переключателей */
+    .switcher-button {
+        background-color: rgba(38, 44, 60, 0.8);
+        color: #D6BDA8;
+        border: 2px solid #D6BDA8;
+        border-radius: 12px;
+        padding: 10px 22px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0;
+        min-width: 160px;
+    }
+
+    .switcher-button:hover,
+    .switcher-button.active {
+        background-color: #D6BDA8;
+        color: #262C3C;
+        transform: translateY(-2px);
+    }
+
+    /* Для мобильных устройств */
+    @media (max-width: 768px) {
+        .filter-buttons {
+            gap: 8px;
+        }
+        .switcher-button {
+            min-width: 130px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .filter-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        .switcher-button {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+</style>
 </style>
 {% endblock %}
 

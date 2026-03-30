@@ -3,7 +3,6 @@
 
 {% block page_styles %}
 <style>
-    /* Свой фон только для гостевой страницы */
     html body {
         background: url('{% static "images/guest_bg.jpg" %}') no-repeat center center fixed !important;
         background-size: 100% 100% !important;
@@ -11,50 +10,49 @@
         padding: 0 !important;
     }
 
-    /* Убираем возможные градиенты и наложения */
     html body::before,
     html body::after {
         display: none !important;
         content: none !important;
     }
 
-    /* Контент - поднимаем выше */
+    /* Убираем стандартные отступы контента */
     .content {
-        display: flex !important;
-        justify-content: center;
-        align-items: center;
-        min-height: 50vh;
-        padding: 20px !important;
-        margin-top: 20px;
+        padding-top: 40px !important;
     }
 
-    /* Контейнер с кнопкой */
     .guest-container {
-        text-align: center;
-        position: relative;
-        z-index: 10;
-        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        text-align: center;
+        min-height: auto;
+        padding: 20px;
     }
 
-    /* Кнопка */
+    .guest-title {
+        font-size: 42px;
+        color: #D6BDA8;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 30px;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
     .btn-try {
         background-color: #D6BDA8;
         color: #262C3C;
         border: 3px solid #262C3C;
         border-radius: 50px;
-        padding: 12px 40px;
-        font-size: 20px;
+        padding: 14px 50px;
+        font-size: 22px;
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-block;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        letter-spacing: 1px;
     }
 
     .btn-try:hover {
@@ -62,30 +60,29 @@
         color: #D6BDA8;
         border: 3px solid #D6BDA8;
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(214, 189, 168, 0.5);
     }
 
-    /* Адаптивность */
     @media (max-width: 768px) {
         .content {
-            margin-top: 30px;
-            min-height: 40vh;
+            padding-top: 60px !important;
         }
-
+        .guest-title {
+            font-size: 32px;
+            margin-top: 30px;
+        }
         .btn-try {
-            padding: 10px 35px;
-            font-size: 18px;
+            padding: 12px 40px;
+            font-size: 20px;
         }
     }
 
     @media (max-width: 480px) {
-        .content {
-            margin-top: 40px;
+        .guest-title {
+            font-size: 28px;
         }
-
         .btn-try {
-            padding: 8px 30px;
-            font-size: 16px;
+            padding: 10px 30px;
+            font-size: 18px;
         }
     }
 </style>
@@ -93,6 +90,7 @@
 
 {% block content %}
 <div class="guest-container">
+    <h1 class="guest-title">Погружаясь в новый мир.</h1>
     <a href="{% url 'register' %}" class="btn-try">Попробовать</a>
 </div>
 {% endblock %}
