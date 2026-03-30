@@ -3,21 +3,18 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from .models import Profile
 
+
+# ==============================================
+# СИГНАЛЫ ДЛЯ АВТОМАТИЧЕСКОГО СОЗДАНИЯ ПРОФИЛЯ
+# ==============================================
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     """
-    Create a profile for the user when a new user is created.
+    Когда создается новый пользователь (created = True),
+    автоматически создаем для него профиль.
+    Чтобы не делать это руками в админке или в коде.
 
-    Parameters:
-    ----------
-        sender: The sender of the signal.
-        instance (User): The instance of the User model being saved.
-        created (bool): Indicates if the User instance was newly created.
-        **kwargs: Additional keyword arguments.
-
-    Returns:
-    -------
-        None
+    Сначала я забыл про сигналы, и у пользователей не было профилей.
     """
     if created:
         Profile.objects.create(user=instance)
@@ -26,16 +23,7 @@ def create_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
     """
-    Save the profile associated with the user.
-
-    Parameters:
-    ----------
-        sender: The sender of the signal.
-        instance (User): The instance of the User model being saved.
-        **kwargs: Additional keyword arguments.
-
-    Returns:
-    -------
-        None
+    Когда обновляем данные пользователя, автоматически обновляем и профиль.
+    Например, если поменяли имя - в профиле оно тоже обновится.
     """
     instance.profile.save()

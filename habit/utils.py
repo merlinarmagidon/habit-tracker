@@ -1,26 +1,21 @@
 """
-Utility functions for the Habit application.
-
-This module contains various utility functions used across the Habit application.
-These functions include conversion functions and other helper methods.
+Вспомогательные функции для приложения Habit.
+Здесь живут функции-конвертеры, которые переводят текстовые значения в числа.
+Долго не мог понять, почему не работает, пока не заметил что в одном месте 'month', а в другом 'months'.
 """
 
 
+# ==============================================
+# КОНВЕРТАЦИЯ ЦЕЛИ В ДНИ
+# ==============================================
 def convert_goal_to_days(value: str) -> int:
     """
-    Convert a goal duration string to the corresponding number of days.
+    На вход получаем что-то типа '1 month' или '3 days'.
+    На выходе - число дней.
+    Используется в форме, когда пользователь выбирает цель из выпадающего списка.
 
-    Args:
-        value (str): The goal duration string in the format '<number><unit>'.
-                     Supported units: 'd' (days), 'w' (weeks), 'm' (months), 'y' (years).
-
-    Returns:
-        int: The number of days corresponding to the input duration.
-
-    Raises:
-        ValueError: If the input duration format is invalid.
+    Проблема: пользователь выбирает "1 месяц", а в базе должно быть 30.
     """
-
     if value == '3 days':
         num = 3
     elif value == '1 week':
@@ -36,22 +31,18 @@ def convert_goal_to_days(value: str) -> int:
     elif value == '1 year':
         num = 365
     else:
-        raise ValueError("Invalid duration format")
+        raise ValueError("Неправильный формат длительности")
     return num
 
 
+# ==============================================
+# КОНВЕРТАЦИЯ ПЕРИОДА В ДНИ
+# ==============================================
 def convert_period_to_days(value: str) -> int:
     """
-    Convert a period string to the corresponding number of days.
-
-    Args:
-        value (str): The period string in the format '<unit>'.
-
-    Returns:
-        int: The number of days corresponding to the input period.
-
-    Raises:
-        ValueError: If the input period format is invalid.
+    На вход: 'daily', 'weekly', 'monthly', 'annual'.
+    На выходе: 1, 7, 30, 365 соответственно.
+    Используется в модели Habit при расчете количества задач.
     """
     if value == 'daily':
         num = 1
@@ -62,5 +53,5 @@ def convert_period_to_days(value: str) -> int:
     elif value == 'annual':
         num = 365
     else:
-        raise ValueError("Invalid duration format")
+        raise ValueError("Неправильный формат периода")
     return num

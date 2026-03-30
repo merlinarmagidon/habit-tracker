@@ -1,20 +1,28 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""
+Главный файл для управления Django-проектом.
+Через него запускаются все команды: runserver, migrate, createsuperuser и т.д.
+Без него ничего не работает.
+"""
+
 import os
 import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """Запускает административные задачи Django."""
+    # Указываем, какой файл настроек использовать
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Habit_Tracker.settings')
     try:
+        # Пытаемся импортировать функцию для выполнения команд
         from django.core.management import execute_from_command_line
     except ImportError as exc:
+        # Если Django не установлен - показываем понятную ошибку
         raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
+            "Не удалось импортировать Django. Убедитесь, что он установлен "
+            "и доступен в виртуальном окружении."
         ) from exc
+    # Выполняем команду из командной строки
     execute_from_command_line(sys.argv)
 
 

@@ -162,7 +162,7 @@ ADMIN_INDEX_TITLE = "Добро пожаловать в панель управ�
 
 
 # Для продакшена на PythonAnywhere (раскомментировать при деплое)
- if 'PYTHONANYWHERE_DOMAIN' in os.environ:
+if 'PYTHONANYWHERE_DOMAIN' in os.environ:
      DEBUG = False
      ALLOWED_HOSTS = [f'{os.environ["PYTHONANYWHERE_DOMAIN"]}']
 
