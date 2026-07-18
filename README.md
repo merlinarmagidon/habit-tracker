@@ -1,71 +1,82 @@
-# Django Habit Tracker
+# Django Habit Tracker (Трекер Привычек)
 
-Django Habit Tracker is a web application designed to help users track their habits, manage tasks, and monitor progress towards their goals.
-This README provides an overview of the project's features, installation instructions, usage guidelines.
+Django Habit Tracker — это веб-приложение, созданное, чтобы помочь пользователям отслеживать свои привычки, управлять задачами и контролировать прогресс в достижении целей. Этот проект я разработал в рамках обучения, чтобы продемонстрировать навыки веб-разработки на Python и Django.
 
-# Installation #
+# Установка #
 
-To install and run Django Habit Tracker locally, follow these steps:
+Чтобы установить и запустить проект локально, выполните следующие шаги:
 
-1. clone the repository
-```
-git clone https://github.com/UsfZA/Habit-Tracker.git
-cd Habit-Tracker
-```
+1. Клонируйте репозиторий
+git clone https://github.com/merlinarmagidon/habit-tracker.git
+cd habit-tracker
 
-2. Install dependencies:
-```
+2. Установите зависимости:
 pip install -r requirements.txt
-```
-3. ### Database configuration ###
-I'm using MySQL as the database, so I've included `mysqlclient` in the requirements.
-If you don't have MySQL installed, you can use the built-in SQLite configuration. Follow these steps:
- 
-  - Ensure you have SQLite installed on your system.
-  - Comment out the MySQL configuration in the 'local_settings.py' file.
-  - Copy the '**local_settings.example.py**' file and rename it to `local_settings.py`.
-  - Update the database configuration in '**local_settings.py**' with your own database credentials.
 
+3. ### Настройка базы данных ###
+По умолчанию проект использует MySQL, поэтому в зависимостях указан `mysqlclient`.
+Если у вас не установлен MySQL, вы можете использовать встроенную SQLite. Для этого:
+  - Убедитесь, что SQLite установлен в вашей системе.
+  - Закомментируйте конфигурацию MySQL в файле `local_settings.py`.
+  - Скопируйте файл `**local_settings.example.py**` и переименуйте копию в `local_settings.py`.
+  - Обновите настройки базы данных в `**local_settings.py**` под свои данные (если используете MySQL).
 
-4. Apply database migrations:
-```
+4. Примените миграции базы данных:
 python manage.py migrate
-```
 
-5. Run the development server:
-```
+5. Запустите сервер разработки:
 python manage.py runserver
-```
 
-6. Access the application in your web browser at [http://localhost:8000](url)
+6. Откройте приложение в браузере по адресу [http://localhost:8000](url)
 
-# Features #
-### User Authentication and Registration: ###
-  * Users can create accounts and log in to track their habits.
-### Habit Tracking: ###
-  * Add, and delete habits.
-  * Tasks are automatically generated based on habit goal, frequency and period.
-  * Track streaks for each habit to maintain consistency.
-  * Earn achievements for hitting streak milestones or completing habits.
-### Analytics: ###
-  * View detailed analytics on habit tracking, including active habits, streak lengths, and progress towards goals.
-  * Visualize habit data to gain insights into behavior patterns.
-### User Profile: ###
-  * Users have personalized profiles displaying their active habits and other relevant information.
+# Возможности #
 
-# Usage #
-Once the application is running, you can perform the following actions: 
+### Аутентификация и регистрация пользователей: ###
+  * Пользователи могут создавать аккаунты и входить в систему для отслеживания привычек.
 
-### Register/Login: ###
-  * Create an account or log in with existing credentials.
-### Add Habits: ###
-  * Navigate to the "Add Habit" page and input details such as habit name, frequency, period, and goal.
-### View and Mark tasks as completed In Home page: ###
-  * View due today tasks and active tasks.
-  * Mark tasks as completed by clicking on them.
-### Monitor Progress: ###
-  * Check your analytics regularly to monitor streak lengths, progress percentages, and achievements.
-### Habit Manager: ###
-  * Navigate to the "Habit Manager" :
-     * View all tracked habits and access their details including tasks journal and streak log for each habit
-     * Delete habits along with associated tasks, streaks, and achievements.
+### Управление привычками: ###
+  * Добавляйте и удаляйте привычки.
+  * Задачи для выполнения автоматически генерируются на основе цели, частоты и периода привычки.
+  * Отслеживайте серии (стрики) для каждой привычки, чтобы поддерживать постоянство.
+  * Получайте достижения за достижение важных целей или завершение привычек.
+
+### Аналитика: ###
+  * Просматривайте подробную аналитику: активные привычки, длина серий и прогресс в процентах.
+  * Визуализируйте данные о привычках, чтобы лучше понимать свои паттерны поведения.
+
+### Профиль пользователя: ###
+  * У каждого пользователя есть персонализированный профиль с обзором его активных привычек.
+
+# Использование #
+
+После запуска приложения вы можете выполнять следующие действия:
+
+### Регистрация / Вход: ###
+  * Создайте учетную запись или войдите с существующими данными.
+
+### Добавление привычек: ###
+  * Перейдите на страницу "Добавить привычку" и укажите название, частоту, период и цель.
+
+### Просмотр и отметка задач на главной странице: ###
+  * Просматривайте задачи на сегодня и активные задачи.
+  * Отмечайте задачи как выполненные, просто кликая по ним.
+
+### Отслеживание прогресса: ###
+  * Регулярно проверяйте аналитику, чтобы следить за длиной серий, процентом прогресса и полученными достижениями.
+
+### Менеджер привычек: ###
+  * Перейдите в раздел "Менеджер привычек":
+    * Просматривайте все отслеживаемые привычки с деталями, журналом задач и историей серий для каждой.
+    * Удаляйте привычки вместе со связанными задачами, сериями и достижениями.
+
+---
+
+## Стек технологий ##
+* **Backend:** Python, Django
+* **База данных:** MySQL / SQLite
+* **Frontend:** HTML, CSS
+* **Дополнительно:** Библиотеки для аналитики (указаны в `requirements.txt`)
+
+## Контакты ##
+Я студент-программист, постоянно развиваюсь в области веб-разработки. Буду рад конструктивной критике и предложениям по сотрудничеству.
+GitHub: [merlinarmagidon](https://github.com/merlinarmagidon)
